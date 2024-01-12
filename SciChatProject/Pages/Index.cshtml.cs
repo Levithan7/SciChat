@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SciChatProject.Models;
 
 namespace SciChatProject.Pages
 {
@@ -15,7 +16,12 @@ namespace SciChatProject.Pages
 
         public void OnGet()
         {
+            DataBaseHelper.ConnectionString = Constants.CONNECTIONSTRING;
+            string testQuery = "SELECT * FROM users";
+            var result = DataBaseHelper.GetObjectsByQuery<User>(testQuery);
 
+            testQuery = DataBaseHelper.CreateQueryForChange("users", new List<User> { new User { id = 0, username = "LeviDerEchte" } });
+            return;
         }
     }
 }
