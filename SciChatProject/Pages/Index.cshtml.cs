@@ -17,11 +17,11 @@ namespace SciChatProject.Pages
         public void OnGet()
         {
             DataBaseHelper.ConnectionString = Constants.CONNECTIONSTRING;
-            string testQuery = "SELECT * FROM users";
-            var result = DataBaseHelper.GetObjectsByQuery<User>(testQuery);
 
-            testQuery = DataBaseHelper.CreateQueryForChange("users", new List<User> { new User { id = 0, username = "LeviDerEchte" } });
-            return;
+            User user = new User { UsernameTEST = "MyMotherIsYourMother" };
+            user.PutUserInDataBase();
+            var conversation = DataBaseHelper.GetObjects<Conversation>().First();
+            conversation.AddUserToConversation(user);
         }
     }
 }

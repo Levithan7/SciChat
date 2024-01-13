@@ -1,5 +1,6 @@
 ﻿using SciChatProject.Models;
 using System.Data.SqlClient;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace SciChatProject
@@ -8,21 +9,27 @@ namespace SciChatProject
     {
         public static string ConnectionString = "";
         
-        static public SqlConnection OpenConnection()
+        static public SqlConnection CreateConnection()
         {
             return new SqlConnection(ConnectionString);
         }
 
+        #region READER
         public static List<T?> GetObjectsByQuery<T>(string query)
         {
-            return GetValuesByCommand(query).Select(x => (T?)GetObject(x, typeof(T))).ToList();
+            return GetValuesByQuery(query).Select(x => (T?)GetObjectByValue(x, typeof(T))).ToList();
         }
 
-        private static List<Dictionary<string, dynamic>> GetValuesByCommand(string query)
+        public static List<T> GetObjects<T>() where T : SQLClass
+        {
+            return GetObjectsByQuery<T>($"SELECT * FROM {typeof(T).GetProperty("TableName").GetValue(null)}") as List<T>;
+        }
+
+        private static List<Dictionary<string, dynamic>> GetValuesByQuery(string query)
         {
             var result = new List<Dictionary<string, dynamic>>();
 
-            var conn = OpenConnection();
+            var conn = CreateConnection();
             conn.Open();
 
             var cmd = new SqlCommand(query, conn);
@@ -42,24 +49,34 @@ namespace SciChatProject
             return result;
         }
 
-        private static Object? GetObject(Dictionary<string, dynamic> attributePairs, Type type)
+        private static object? GetObjectByValue(Dictionary<string, dynamic> attributePairs, Type type)
         {
             var obj = Activator.CreateInstance(type);
 
             foreach(var attributePair in attributePairs)
             {
-                var property = type.GetProperty(attributePair.Key);
-                if (property == null) continue;
-
-                var propertyValue = attributePair.Value;
-
-                property.SetValue(obj, propertyValue, null);
+                var property = type.GetProperties().ToList().FirstOrDefault(x=>(x.GetCustomAttribute(typeof(SQLProperty)) as SQLProperty)?.Name==attributePair.Key) ?? type.GetProperty(attributePair.Key) ?? throw new Exception($"Property for {type} not in DataBase ");
+                property.SetValue(obj, attributePair.Value, null);
             }
 
             return obj;
         }
 
-        public static string CreateQueryForChange<T>(string dataBaseName, List<T> objects, ChangeType changeType=ChangeType.Update)
+        #endregion READER
+
+        #region FILLER
+        public static void ExecuteChange<T>(string dataBaseName, List<T> objects, ChangeType changeType = ChangeType.Insert)
+        {
+            var query = CreateQueryForChange(dataBaseName, objects, changeType);
+            var conn = CreateConnection();
+
+            conn.Open();
+            var cmd = new SqlCommand(query, conn);
+            cmd.ExecuteNonQuery();
+            
+            conn.Close();
+        }
+        private static string CreateQueryForChange<T>(string dataBaseName, List<T> objects, ChangeType changeType=ChangeType.Insert)
         {
             string result = string.Empty;
 
@@ -74,22 +91,25 @@ namespace SciChatProject
                     return result;
 
                 case ChangeType.Update:
-                    throw new NotImplementedException($"{ChangeType.Update.ToString()} has not been implemented yet!");
+                    throw new NotImplementedException($"{ChangeType.Update} has not been implemented yet!");
             }
 
             throw new Exception("For some reason No Query String was Created!");
         }
 
-        private static List<string> GetListOfPropertieNames(object obj)
+        private static List<PropertyInfo> GetListOfChangableProperties(object obj)
         {
-            var result = obj.GetType().GetProperties().Select(x => x.Name).ToList();
-            return result;
+            return obj.GetType().GetProperties().Where(x => x.GetCustomAttribute(typeof(SQLProperty)) != null).ToList();
         }
 
+        private static List<string> GetListOfPropertieNames(object obj)
+        {
+            return GetListOfChangableProperties(obj).Select(x => (x.GetCustomAttribute(typeof(SQLProperty)) as SQLProperty)?.Name ?? x.Name).ToList();
+        }
 
         private static List<string?> GetListOfPropertieValues(object obj)
         {
-            var result = obj.GetType().GetProperties().Select(x => ModifyProperty(x.GetValue(obj))).ToList();
+            var result = GetListOfChangableProperties(obj).Select(x => ModifyProperty(x.GetValue(obj))).ToList();
             return result;
         }
 
@@ -104,5 +124,6 @@ namespace SciChatProject
             Update,
             Insert
         }
+        #endregion FILLER
     }
 }

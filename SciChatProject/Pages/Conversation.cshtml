@@ -1,0 +1,13 @@
+﻿@page
+@model SciChatProject.Pages.ConversationModel
+@{
+	string convid = Request.Query["conversationid"];
+}
+
+<p>
+	<!--Example on how data could be displayed-->
+	@foreach(var message in Models.Conversation.GetConversationByID(Int32.Parse(convid)).GetMessages())
+	{
+		<br />@message.Content
+	}
+</p>
