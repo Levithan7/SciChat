@@ -3,3 +3,5 @@
 @{
     ViewData["Title"] = "Home page";
 }
+
+@Html.Raw(Models.Message.ParseLaTeX(@"Ich gehe nach Hause und sehe die Formel $$\frac{a}{x}$$. Sie sieht toll aus!"))
