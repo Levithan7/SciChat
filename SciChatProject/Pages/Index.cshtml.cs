@@ -18,10 +18,8 @@ namespace SciChatProject.Pages
         {
             DataBaseHelper.ConnectionString = Constants.CONNECTIONSTRING;
 
-            User user = new User { UsernameTEST = "MyMotherIsYourMother" };
-            user.PutUserInDataBase();
-            var conversation = DataBaseHelper.GetObjects<Conversation>().First();
-            conversation.AddUserToConversation(user);
+            //Message message = new Message { Content=@"I like fractions like this: $$\frac{a}{b}$$ very much!"};
+            //message.ParseLaTeX();
         }
     }
 }

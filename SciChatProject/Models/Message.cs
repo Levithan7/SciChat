@@ -1,4 +1,7 @@
-﻿namespace SciChatProject.Models
+﻿using System.Net;
+using System.Text.RegularExpressions;
+
+namespace SciChatProject.Models
 {
     public class Message : SQLClass
     {
@@ -27,6 +30,22 @@
         public Conversation GetConversation()
         {
             return DataBaseHelper.GetObjects<Conversation>().First(x => x.id == ConversationID);
+        }
+        public void ParseLaTeX()
+        {
+            Content = ParseLaTeX(Content);
+        }
+
+        public static string ParseLaTeX(string msg)
+        {
+            Match m;
+            while((m = Regex.Match(msg, @"\$\$(?<eq>.+)\$\$")).Success)
+            {
+                var latexExpression = m.Groups["eq"].Value;
+                var imageHtml = $"<img src=\"https://latex.codecogs.com/svg.image? {latexExpression}\" />";
+                msg = msg.Replace(m.Value, imageHtml);
+            }
+            return msg;
         }
     }
 }
