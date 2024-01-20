@@ -17,6 +17,9 @@ namespace SciChatProject.Pages
         public void OnGet()
         {
             DataBaseHelper.ConnectionString = Constants.CONNECTIONSTRING;
+
+            //Message message = new Message { Content=@"I like fractions like this: $$\frac{a}{b}$$ very much!"};
+            //message.ParseLaTeX();
         }
     }
 }
