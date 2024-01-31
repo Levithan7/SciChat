@@ -5,6 +5,8 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
 using System.Reflection.Metadata;
 using System.Text.RegularExpressions;
 
@@ -90,7 +92,7 @@ namespace SciChatProject.Models
         public static string CreateGraph(string gb)
         {
             #region defaultvalues
-            string plottype = "scatter", xlabel=string.Empty, ylabel=string.Empty;
+            string plottype = "scatter", xlabel=string.Empty, ylabel=string.Empty, datatype=string.Empty;
             double[] xdata = Array.Empty<double>(), ydata = Array.Empty<double>();
             int[] scale = { 100, 100};
             double? xmin = null, xmax = null, ymin = null, ymax = null;
@@ -111,6 +113,12 @@ namespace SciChatProject.Models
             if ((m = Regex.Match(gb, @"\\scale=\'(?<scale>\d+x\d+)\'")).Success)
             {
                 scale = m.Groups["scale"].Value.Split("x").Select(x=>int.Parse(x)).ToArray();
+            }
+
+            // Data Type:
+            if ((m = Regex.Match(gb, @"\\datatype\=\'(?<datatype>.+?)\'")).Success)
+            {
+                datatype = m.Groups["datatype"].Value;
             }
             #endregion general
 
@@ -156,10 +164,19 @@ namespace SciChatProject.Models
             #endregion graphsettings
 
             #region data
+            #region function
+            if ((m = Regex.Match(gb, @"\\function\=\'(?<function>.+?)\'")).Success)
+            {
+                var functionStr = m.Groups["function"].Value;
+                var function = StringToLambda(functionStr);
+                myPlot.Add.Function(function);
+            }
+            #endregion function
+
+            #region rawdata
             // xdata:
             if ((m = Regex.Match(gb, @"\\xdata\=\[(?<xdata>.+?)\]")).Success)
             {
-                var test = m.Groups["xdata"].Value.Split(",");
                 xdata = m.Groups["xdata"].Value.Split(",").Select(x=>double.Parse(x)).ToArray();
             }
 
@@ -183,6 +200,7 @@ namespace SciChatProject.Models
                     xydata = xydata.Replace(m.Value, "");   
                 }
             }
+            #endregion rawdata
             #endregion data
 
             #region plotcreation
@@ -215,5 +233,11 @@ namespace SciChatProject.Models
             #endregion plotcreation
         }
         #endregion MessageParser
+
+        private static Func<double, double> StringToLambda(string expression)
+        {
+            return DynamicExpressionParser.ParseLambda<double, double>(new ParsingConfig(), true, expression).Compile();
+        }
     }
+
 }
