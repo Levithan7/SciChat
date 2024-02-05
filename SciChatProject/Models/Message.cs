@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
+using System.Reflection.Emit;
 using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
@@ -244,25 +245,103 @@ namespace SciChatProject.Models
         {
             var converter = new KeyValuePair<string, string>[]
             {
-                new("e", "(Math.e)"),
-                new("sin", "(Math.Sin)"),
-                new("cos", "(Math.Cos)")
+                new("e", "Math.e"),
+                new("sin", "Math.Sin"),
+                new("cos", "Math.Cos")
             };
 
             foreach(var conversion in converter)
             {
                 math = math.Replace(conversion.Key, conversion.Value);
             }
+            var final = ConvertCurrentLevelParantatheses(math);
+            return final;
+        }
 
+        public static int FindControParan(int idx, string test, int direction, bool returnCharacterIfNoParan=false) // direction 1-> forward ) searched -1-> backward ( searched
+        {
+            char lookedFor='!';
+            char lookedForContra;
+
+            lookedFor = direction == 1 ? ')' : (direction == -1 ? '(' : '!');
+            lookedForContra = lookedFor == ')' ? '(' : ')';
+
+            var charAtPosition = test[idx];
+            if (charAtPosition != lookedForContra)
+            {
+                if (returnCharacterIfNoParan)
+                    return idx;
+                throw new Exception($"No {lookedForContra} at given index {idx}!");
+            }
+            if (lookedFor == '!')
+                throw new Exception($"Direction {direction} is invalid (has to be -1 or 1)!");
+
+            int lookedForExcess = 1;
+            while(lookedForExcess != 0)
+            {
+                idx+=direction;
+                charAtPosition = test[idx];
+                lookedForExcess += charAtPosition == lookedFor ? -1 : (charAtPosition == lookedForContra ? 1 : 0);
+            }
+            return idx;
+        }
+
+        public static string ConvertExponentToPow(string paranthase)
+        {
             Match m;
-            if((m = Regex.Match(math, @"(?<base>.)\^(?<exp>.)")).Success)
+            if ((m = Regex.Match(paranthase, @"(?<base>.+)\^(?<exp>.+)")).Success)
             {
                 var powbase = m.Groups["base"].Value;
+                powbase = powbase.Substring(FindControParan(powbase.Length - 1, powbase, -1, true));
+
                 var powexp = m.Groups["exp"].Value;
-                math = math.Replace(m.Value, $"Math.pow({powbase}, {powexp})");
+                powexp = powexp.Substring(0, FindControParan(0, powexp, 1, true) +1);
+                
+                paranthase = paranthase.Replace($"{powbase}^{powexp}", $"Math.Pow({powbase}, {powexp})");
+            }
+            return paranthase;
+        }
+
+        public static string ConvertCurrentLevelParantatheses(string level)
+        {
+            var children = new List<string>();
+            int leftOpen = 0;
+            var currentString = string.Empty;
+
+            foreach(var i in level)
+            {
+                if (currentString == string.Empty && i != '(')
+                    continue;
+
+                currentString += i;
+                leftOpen += Convert.ToInt16(i == '(');
+                leftOpen -= Convert.ToInt16(i == ')');
+                if(leftOpen==0 && currentString!=string.Empty && currentString.StartsWith("("))
+                {
+                    children.Add(currentString);
+                    currentString = string.Empty;
+                }
             }
 
-            return math;
+            var result = level;
+            
+            if(children.Count() != 0)
+            {
+                foreach(var j in children)
+                {
+                    var replacement = j;
+                    if(replacement.StartsWith("("))
+                        replacement = replacement.Substring(1);
+                    if (replacement.EndsWith(")"))
+                        replacement = replacement.Substring(0, replacement.Length - 1);
+
+                    replacement = ConvertCurrentLevelParantatheses(replacement);
+                    result = result.Replace(j, $"({replacement})");
+                }
+            }
+
+            var final = ConvertExponentToPow(result);
+            return final;
         }
     }
 

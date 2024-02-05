@@ -6,15 +6,18 @@
 
 <br />@Html.Raw(Models.Message.ParseAllCommands(@"Wilkommen zu diesem kleinen Intro. Ab jetzt kann man Formeln wie $$x$$ darstellen. Viel Spaß! $$\frac{e^x}{y}$$"))
 <br />@Html.Raw(Models.Message.ParseAllCommands(@"Auch Graphen lassen sich darstellen"))
+
+<br />@Models.Message.ConvertCurrentLevelParantatheses("x^(2+3^x)-2x")
+
 <br />@Html.Raw(Models.Message.ParseAllCommands(@"
-\begingraph 
+\begingraph
     \xlabel='X-Axis'
     \datatype='function'
-    \function='x^2'
+    \function='x^(3-x^2)'
     \type='scatter'
-    \scale='500x400' 
-    \xmin='-5'
-    \xmax='5'
+    \scale='1500x400'
+    \xmin='-100'
+    \xmax='100'
     \ymin='-3'
-    \ymax='30'
+    \ymax='5'
 \endgraph"))
