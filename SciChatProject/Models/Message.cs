@@ -8,6 +8,7 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using System.Reflection.Metadata;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
 namespace SciChatProject.Models
@@ -236,7 +237,32 @@ namespace SciChatProject.Models
 
         private static Func<double, double> StringToLambda(string expression)
         {
-            return DynamicExpressionParser.ParseLambda<double, double>(new ParsingConfig(), true, expression).Compile();
+            return DynamicExpressionParser.ParseLambda<double, double>(new ParsingConfig(), true, $"x=>{MathToLambda(expression)}").Compile();
+        }
+
+        private static string MathToLambda(string math)
+        {
+            var converter = new KeyValuePair<string, string>[]
+            {
+                new("e", "(Math.e)"),
+                new("sin", "(Math.Sin)"),
+                new("cos", "(Math.Cos)")
+            };
+
+            foreach(var conversion in converter)
+            {
+                math = math.Replace(conversion.Key, conversion.Value);
+            }
+
+            Match m;
+            if((m = Regex.Match(math, @"(?<base>.)\^(?<exp>.)")).Success)
+            {
+                var powbase = m.Groups["base"].Value;
+                var powexp = m.Groups["exp"].Value;
+                math = math.Replace(m.Value, $"Math.pow({powbase}, {powexp})");
+            }
+
+            return math;
         }
     }
 
