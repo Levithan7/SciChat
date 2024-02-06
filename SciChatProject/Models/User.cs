@@ -20,5 +20,10 @@
         {
             DataBaseHelper.ExecuteChange(TableName, new List<User> { this }, DataBaseHelper.ChangeType.Insert);
         }
+
+        public static User GetUserByID(int id)
+        {
+            return DataBaseHelper.GetObjects<User>().First(x => x.id == id);
+        }
     }
 }
