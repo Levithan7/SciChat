@@ -31,9 +31,6 @@ msbuild.err
 msbuild.wrn
 
 # Visual Studio 2015
-<<<<<<< Updated upstream
-.vs/
-=======
 .vs/
 *.v2
 SciChatProject/.vs/SciChatProject/v17/.suo
@@ -44,5 +41,3 @@ SciChatProject/obj/Debug/net6.0/SciChatProject.AssemblyInfo.cs
 
 SciChatProject/obj/SciChatProject.csproj.nuget.dgspec.json
 SciChatProject/obj/project.assets.json
-SciChatProject/Constants.cs
->>>>>>> Stashed changes

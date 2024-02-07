@@ -16,7 +16,7 @@
             return DataBaseHelper.GetObjects<UserConversationLink>().Where(x=>x.ConversationID==id).Select(x=>new User { id=x.UserID }).ToList();
         }
 
-        public void AddUserToConversation(User user)
+		public void AddUserToConversation(User user)
         {
             UserConversationLink link = new UserConversationLink { UserID = user.id, ConversationID = id };
             DataBaseHelper.ExecuteChange(UserConversationLink.TableName, new List<UserConversationLink>{link}, DataBaseHelper.ChangeType.Insert);
@@ -26,5 +26,5 @@
         {
             return DataBaseHelper.GetObjects<Conversation>().First(x=>x.id==id);
         }
-    }
+	}
 }
