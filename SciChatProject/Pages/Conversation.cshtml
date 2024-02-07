@@ -2,12 +2,28 @@
 @model SciChatProject.Pages.ConversationModel
 @{
 	string convid = Request.Query["conversationid"];
+	string buff = ":";
+	int a = 0;
+	int[] buff2 = {};
+	int i = 0;
+	int m = 0;
 }
 
 <p>
 	<!--Example on how data could be displayed-->
-	@foreach(var message in Models.Conversation.GetConversationByID(Int32.Parse(convid)).GetMessages())
+
+	@foreach (var message in Models.Conversation.GetConversationByID(Int32.Parse(convid)).GetMessages())
 	{
-		<br />@message.Content
+		@foreach (var userid in Models.Conversation.GetConversationByID(Int32.Parse(convid)).GetUser(message.Content))
+		{
+			@foreach (var username in Models.Conversation.GetConversationByID(Int32.Parse(convid)).GetUsersName(userid.id))
+			{
+				<br />@username.UsernameTEST
+				@buff
+				<br />@message.Content
+
+			}
+		}
 	}
+	
 </p>
