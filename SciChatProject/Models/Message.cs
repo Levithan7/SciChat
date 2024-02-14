@@ -243,11 +243,34 @@ namespace SciChatProject.Models
 
         private static string MathToLambda(string math)
         {
+            // Generiert mit ChatGPT nach einer selbst erstellten Vorlage:
             var converter = new KeyValuePair<string, string>[]
             {
-                new("e", "Math.e"),
+                new("e", "Math.E"),
+                new("pi", "Math.PI"),
+                new("abs", "Math.Abs"),
+                new("acos", "Math.Acos"),
+                new("asin", "Math.Asin"),
+                new("atan", "Math.Atan"),
+                new("atan2", "Math.Atan2"),
+                new("ceiling", "Math.Ceiling"),
+                new("cos", "Math.Cos"),
+                new("cosh", "Math.Cosh"),
+                new("exp", "Math.Exp"),
+                new("floor", "Math.Floor"),
+                new("log", "Math.Log"),
+                new("log10", "Math.Log10"),
+                new("max", "Math.Max"),
+                new("min", "Math.Min"),
+                new("pow", "Math.Pow"),
+                new("round", "Math.Round"),
+                new("sign", "Math.Sign"),
                 new("sin", "Math.Sin"),
-                new("cos", "Math.Cos")
+                new("sinh", "Math.Sinh"),
+                new("sqrt", "Math.Sqrt"),
+                new("tan", "Math.Tan"),
+                new("tanh", "Math.Tanh"),
+                new("truncate", "Math.Truncate")
             };
 
             foreach(var conversion in converter)
