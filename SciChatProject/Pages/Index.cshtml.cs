@@ -16,7 +16,6 @@ namespace SciChatProject.Pages
 
         public void OnGet()
         {
-            DataBaseHelper.ConnectionString = Constants.CONNECTIONSTRING;
         }
     }
 }

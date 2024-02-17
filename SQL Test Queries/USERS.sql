@@ -4,6 +4,6 @@ CREATE TABLE users(
 );
 
 INSERT INTO users(username)
-VALUES('Levithan7');
+VALUES('testbot');
 
 DROP TABLE users;

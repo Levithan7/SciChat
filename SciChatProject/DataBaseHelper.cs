@@ -7,7 +7,7 @@ namespace SciChatProject
 {
     public static class DataBaseHelper
     {
-        public static string ConnectionString = "";
+        public static string ConnectionString = Constants.CONNECTIONSTRING;
         
         static public SqlConnection CreateConnection()
         {
@@ -22,7 +22,7 @@ namespace SciChatProject
 
         public static List<T> GetObjects<T>() where T : SQLClass
         {
-            return GetObjectsByQuery<T>($"SELECT * FROM {typeof(T).GetProperty("TableName").GetValue(null)}") as List<T>;
+            return GetObjectsByQuery<T>($"SELECT * FROM {typeof(T)?.GetProperty("TableName")?.GetValue(null)}") as List<T>;
         }
 
         private static List<Dictionary<string, dynamic>> GetValuesByQuery(string query)

@@ -8,12 +8,13 @@
 
         public List<Message> GetMessages()
         {
+            var foo = DataBaseHelper.GetObjects<Message>(); 
             return DataBaseHelper.GetObjects<Message>().Where(x => x.ConversationID==id).ToList();
         }
 
         public List<User> GetUsers()
         {
-            return DataBaseHelper.GetObjects<UserConversationLink>().Where(x=>x.ConversationID==id).Select(x=>new User { id=x.UserID }).ToList();
+            return DataBaseHelper.GetObjects<UserConversationLink>().Where(x=>x.ConversationID==id).Select(x=>User.GetUserById(x.UserID)).ToList();
         }
 
         public void AddUserToConversation(User user)

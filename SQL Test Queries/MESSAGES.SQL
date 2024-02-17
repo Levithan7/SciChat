@@ -6,6 +6,6 @@ CREATE TABLE messagestable(
 );
 
 INSERT INTO messagestable(content, userid, conversationid)
-VALUES('Hello World 1', 1, 1);
+VALUES('/forloop 10', 8, 1);
 
 DROP TABLE messagestable;
