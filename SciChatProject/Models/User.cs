@@ -23,6 +23,7 @@
 
         public static User GetUserById(int id)
         {
+            var foo = DataBaseHelper.GetObjects<User>();
             return DataBaseHelper.GetObjects<User>().First(x=>x.id==id);
         }
     }

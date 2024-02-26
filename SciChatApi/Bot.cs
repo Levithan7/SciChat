@@ -70,6 +70,7 @@ namespace SciChatApi
 
             var task = client.PostAsync(url, content);
             task.Wait();
+            var success = task.IsCompletedSuccessfully;
         }
     }
 }
