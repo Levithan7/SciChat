@@ -2,12 +2,29 @@
 @model SciChatProject.Pages.ConversationModel
 @{
 	string convid = Request.Query["conversationid"];
+	string buff = ":";
+	
 }
 
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 <p>
+	<body>
 	<!--Example on how data could be displayed-->
-	@foreach(var message in Models.Conversation.GetConversationByID(Int32.Parse(convid)).GetMessages())
+	<form id="message" method="post">
+	<input type="submit" name="sendmessage" value="click" />
+	<input type="text" name="contentmessage" placeholder="Message" /><br/>
+	@foreach (var message in Models.Conversation.GetConversationByID(Int32.Parse(convid)).GetMessages())
 	{
-		<br />@message.Content
+		<br /> @message.GetUser().UsernameTEST
+		:
+		<br /> @message.Content
 	}
+	
+	</form>
+	</body>
 </p>
+
+
+
+

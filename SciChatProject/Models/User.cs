@@ -21,10 +21,9 @@
             DataBaseHelper.ExecuteChange(TableName, new List<User> { this }, DataBaseHelper.ChangeType.Insert);
         }
 
-        public static User GetUserById(int id)
+        public static User GetUserByID(int id)
         {
-            var foo = DataBaseHelper.GetObjects<User>();
-            return DataBaseHelper.GetObjects<User>().First(x=>x.id==id);
+            return DataBaseHelper.GetObjects<User>().First(x => x.id == id);
         }
     }
 }
