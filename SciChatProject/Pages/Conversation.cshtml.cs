@@ -13,7 +13,7 @@ namespace SciChatProject.Pages
 		}
 		public void OnPost() 
 		{
-			string a = Request.Form["text1"];
+			string a = Request.Form["contentmessage"];
 			Models.Message.SendMessage(a, 1, 1);
 		}
 

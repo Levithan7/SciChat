@@ -9,20 +9,20 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <p>
-	
+	<body>
 	<!--Example on how data could be displayed-->
-	<form id="form1" method="post">
-	<input type="submit" value="click" />
-	<input type="text" name="text1" placeholder="Write your text here" /><br/>
+	<form id="message" method="post">
+	<input type="submit" name="sendmessage" value="click" />
+	<input type="text" name="contentmessage" placeholder="Message" /><br/>
 	@foreach (var message in Models.Conversation.GetConversationByID(Int32.Parse(convid)).GetMessages())
 	{
 		<br /> @message.GetUser().UsernameTEST
-		@buff
+		:
 		<br /> @message.Content
 	}
 	
 	</form>
-	
+	</body>
 </p>
 
 
