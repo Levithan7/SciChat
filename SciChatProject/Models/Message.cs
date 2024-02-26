@@ -27,6 +27,7 @@ namespace SciChatProject.Models
         }
         private static void SendMessage(Message message)
         {
+            DataBaseHelper.ExecuteChange("messagestable", new List<Message> { message }, DataBaseHelper.ChangeType.Insert);
         }
 
         public User GetUser()

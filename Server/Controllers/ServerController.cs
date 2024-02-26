@@ -57,7 +57,7 @@ namespace Server.Controllers
             return Ok(json);
         }
 
-        [HttpGet("addmessage")]
+        [HttpPost("addmessage")]
         public IActionResult AddMessage(int userid, int conversationid, string content)
         {
             Message.SendMessage(content, userid, conversationid);

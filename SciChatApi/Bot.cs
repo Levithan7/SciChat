@@ -67,6 +67,7 @@ namespace SciChatApi
         private static void PostData(string url, Dictionary<string, string> parameters)
         {
             var content = new FormUrlEncodedContent(parameters);
+
             var task = client.PostAsync(url, content);
             task.Wait();
         }
