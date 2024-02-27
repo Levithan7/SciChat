@@ -1,0 +1,15 @@
+﻿@page
+@model SciChatProject.Pages.loginModel
+@{
+
+
+
+}
+<p>
+    <form id="loginform" method="post">
+        <input type="text" placeholder="Id" name="loginid" />
+        <input type="password" placeholder="Password" name="loginpassword" />
+        <input type="submit" value="Log in" name="loginsubmit" />
+    </form> 
+    @HttpContext.Session.GetString("error")
+</p>

@@ -5,9 +5,28 @@
 }
 
 <p>
+<<<<<<< Updated upstream
 	<!--Example on how data could be displayed-->
 	@foreach(var message in Models.Conversation.GetConversationByID(Int32.Parse(convid)).GetMessages())
 	{
 		<br />@message.Content
 	}
 </p>
+=======
+	<form id="message" method="post">
+	<input type="submit" name="sendmessage" value="Send" />
+	<input type="text" name="contentmessage" placeholder="Message" /><br/>
+	@foreach (var message in Models.Conversation.GetConversationByID(Int32.Parse(convid)).GetMessages())
+	{
+		<br /> @message.GetUser().UsernameTEST
+		@buff
+		<br /> @message.Content
+	}
+	
+	</form>
+</p>
+
+
+
+
+>>>>>>> Stashed changes

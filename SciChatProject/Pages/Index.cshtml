@@ -1,7 +1,9 @@
 ﻿@page
+@using Microsoft.AspNetCore.Http
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
+<<<<<<< Updated upstream
 }
 
 <br />@Html.Raw(Models.Message.ParseAllCommands(@"Wilkommen zu diesem kleinen Intro. Ab jetzt kann man Formeln wie $$x$$ darstellen. Viel Spaß! $$\frac{e^x}{y}$$"))
@@ -18,3 +20,22 @@
     \ymin='1'
     \ymax='11'
 \endgraph"))
+=======
+    int login = HttpContext.Session.GetInt32("idlogin").Value;
+}
+
+<p>
+    @foreach (var conv in Models.User.GetUserByID(login).GetConversations())
+    {
+        <br />
+        <a href="https://localhost:7030/conversation?conversationid=@conv.id" name="chatbutton" target="_blank" class="btn btn-dark">@conv.ConversationName</a>
+        <br />
+        
+    }
+    <form id="disconnect" method="post">
+    <input value="disconnect" type="submit" name="disconnectbutton" />
+    </form>
+</p>
+
+
+>>>>>>> Stashed changes
