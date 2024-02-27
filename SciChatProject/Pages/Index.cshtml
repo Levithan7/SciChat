@@ -3,24 +3,6 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
-<<<<<<< Updated upstream
-}
-
-<br />@Html.Raw(Models.Message.ParseAllCommands(@"Wilkommen zu diesem kleinen Intro. Ab jetzt kann man Formeln wie $$x$$ darstellen. Viel Spaß! $$\frac{e^x}{y}$$"))
-<br />@Html.Raw(Models.Message.ParseAllCommands(@"Auch Graphen lassen sich darstellen"))
-<br />@Html.Raw(Models.Message.ParseAllCommands(@"
-\begingraph 
-    \xlabel='X-Axis'
-    \xdata=[0,5,10]
-    \ydata=[10,2,10]
-    \type='scatter'
-    \scale='500x400' 
-    \xmin='0'
-    \xmax='10'
-    \ymin='1'
-    \ymax='11'
-\endgraph"))
-=======
     int login = HttpContext.Session.GetInt32("idlogin").Value;
 }
 
@@ -38,4 +20,4 @@
 </p>
 
 
->>>>>>> Stashed changes
+

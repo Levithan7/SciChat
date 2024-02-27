@@ -2,17 +2,10 @@
 @model SciChatProject.Pages.ConversationModel
 @{
 	string convid = Request.Query["conversationid"];
+	string buff = ":";
 }
 
 <p>
-<<<<<<< Updated upstream
-	<!--Example on how data could be displayed-->
-	@foreach(var message in Models.Conversation.GetConversationByID(Int32.Parse(convid)).GetMessages())
-	{
-		<br />@message.Content
-	}
-</p>
-=======
 	<form id="message" method="post">
 	<input type="submit" name="sendmessage" value="Send" />
 	<input type="text" name="contentmessage" placeholder="Message" /><br/>
@@ -27,6 +20,3 @@
 </p>
 
 
-
-
->>>>>>> Stashed changes

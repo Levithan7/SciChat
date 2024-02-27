@@ -21,8 +21,6 @@
         {
             DataBaseHelper.ExecuteChange(TableName, new List<User> { this }, DataBaseHelper.ChangeType.Insert);
         }
-<<<<<<< Updated upstream
-=======
 
         public static User GetUserByID(int id)
         {
@@ -52,6 +50,5 @@
                 return false;
             }
         }
->>>>>>> Stashed changes
     }
 }
