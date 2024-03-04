@@ -2,7 +2,7 @@
 
 ## Das Chatprogramm
 ### Nutzung von SciChat als regulärer Nutzer
-### Speichern der Daten
+### Die Dateien
 Das Speichern der Daten funktioniert über MySQL. Während der Entwicklung wird aktuell jeweils ein Datenbankserver auf der lokalen Maschine des jeweiligen Entwicklers verwenden.
 Im späteren Verlauf soll die Datenbank auf einem Server gehosted werden. 
 #### DataBaseHelper.cs
@@ -41,7 +41,7 @@ BEISPIEL EINFÜGEN
 Diese Methode gibt die Namen dieser Properties zurück.
 
 **List<string> GetListOfPropertieValues(object obj)**
-Deklariert man das Propertiy eines Model als SQLProperty so besteht dabei die Option den Variablennamen ungleich den Namen der Spalte in der Tabelle zusetzen.
+Deklariert man das Propertiy eines Model als SQLProperty, so besteht dabei die Option den Variablennamen ungleich den Namen der Spalte in der Tabelle zusetzen.
 BEISPIEL EINFÜGEN
 Diese Methode gibt die Werte dieser Properties zurück.
 
@@ -51,6 +51,63 @@ Zahlen bleiben dabei gleich. Um Strings jedoch werden Anführungszeichen gesetzt
 
 **enum ChangeType**
 Dieser enum deklariert alle Änderungstypen. Aktuell sind nur Insert und Update vorhanden wobei nur für Insert eine Funktionalität implementiert wurde.
+
+#### Models.Attributes.cs
+Hier wird das C# Attribut SQLProerty definiert. Dessen Verwendungszweck wurde bereits erläutert.
+
+#### Models.SQLClass.cs
+In dieser Datei befindet sich eine Vorlagen-Klasse von der Alle Objekte erben müssen, die in die Datenbank eingetragen könenn werden sollen.
+
+#### Weitere Klassen in Models
+Objekte dieser Klassen lassen sich in die Datenbank einpflegen. Die meisten der Klassen beinhalten nur sehr einfach gestrickte Methoden deren weitere
+Erläuterung nicht notwendig ist. Im allgemeinen geht es oft darum Objekte dieser Klassen anhand der entsprechenden Methodenparamter zu erhalten oder zu modifizieren abhänhig. Eine Ausnahme spielt dabei die Message Klasse.
+
+#### Models.Message.cs
+Neben den herkömmlichen Methoden (vgl. Weitere Klassen in Models) bietet Message.cs zusätzlich einige Methoden, die sich auf das Darstellen von Nachrichten im Chat beziehen.
+Dabei können sowohl reguläre LaTeX ausdrücke verwendet werden als auch die selbst entwickelte Darstellung von Graphen. Die Verwendung dieser kann in "Nutzung von SciChat durch einen regulären Nutzer" nachgelesen werden.
+
+**string ParseAllCommands(string msg)**
+Das ist der Kopf der Funktionalität. Es wurde eine "rohe" Nachricht eingegeben und die entsprechend umgewandelte (ab jetzt: geparsd) Nachrichten werden zurückgegeben.
+
+**void ParseLaTex()**
+Wird auf ein Message-Objekt die Methdie ParseLatex() so wird ihr Content ensprechend ParseLaTex(string latex) angepasst.
+
+**string ParselaTeX(string latex)**
+Über RegEx (Regular Expressions) wird geprüft, ob ein mögliches LaTeX Element in der Nachricht vorhanden ist. Mögliche LaTeX Elemente beginnen und enden stets mit $$
+Jedes dabei gefundene Element wird danach wird über einen eExternen Anbieter (codecogs.com) in ein entsprechendes Bild gewandelt, welches innerhalb der Nachricht dargestellt wird als wäre es
+normaler Text-Bestandteil.
+
+**void ParseGraphBuilder()**
+Wird auf ein Message-Objekt die Methdie ParseGraphBuilder() so wird ihr Content ensprechend ParseGraphBuilder(string msg) angepasst.
+
+**string ParseGraphBuilder()**
+Über RegEx (Regular Expressions) wird geprüft, ob ein mögliches LaTeX Element in der Nachricht vorhanden ist. Mögliche GraphBuilder Elemente beginnen mit `\begingraph` und enden mit `\endgraph`.
+Jedes dabei gefundene Element wird danach über die Methode `CreateGraph(string gb)` in ein entsprechendes Bild gewandelt, welches innerhalb der Nachricht dargestellt wird.
+
+**string CreateGraph(string gb)**
+Diese Methode ist dafür zuständig aus einem sog. GraphBuilder (kurz: `GB` bzw. `gb`) die nötigen Informationen herauszuziehen und entsprechend einen Graphen zu erstellen.
+Dabei gibt es zunächst die Region `graphsettings` in der alle Einstellungen zum Graphen (Typ, Skalierung etc.) eingebracht werden.
+Darauf folgt die Region `data` inder die Daten aus der Eingabe geholt werden. Hierbei gibt es verschiedene Optionen Daten anzugeben, die in "Nutzung von SciChat durch einen regulären Nutzer" erläutert werden.
+Zum Schluss kommt die Region `plotcreation` in der - je nach Plottype - ein bestimmter Graph erstellt und in das HTML-Image Format umgewandelt wird.
+
+**Func<double, double> StringToLambda(string expression)**
+Diese Methode wandelt einen mathematischen der C#-Syntaxt enstprechenden string in eine Func um, die verwendet werden kann, um Graphen per Funktionen `f(x) = ...` zu erstellen.
+
+**string MathToLambda(string math)**
+Da Menschen in der Norm ihre Mathematischen Ausdrücke nicht der C#-Syntax entsprechend ausdrücken, müssen einige Ausdrücke umgewandelt werden. Ein Beispiel dafür ist, dass wir `cos(x)` schreiben würden,
+C# allerdings `Math.Cos(x)`. Problematisch wurde es vor allem beim kompilieren von Funktionne mit Exponenten, da in C# die schreibweise `Math.Pow(a, b)` statt `a^b` verwendet wird. Darüber ergaben sich dann einige Probleme mit dem Unterscheiden von Exponenten und Basen (v.a. bei Exponenten, die wiederrum Exponenten enthalten etc.), die über die folgenden Methoden abgewickelt werden.
+
+**int FindContraParan(int idx, string text, int direction, bool returnCharacterIfNoParan=false)**
+Diese Methode gibt vereinfacht ausgedrückt für eine sich öffnende Klammer an der Stelle `idx` die Stelle zurück in der die Klammer wieder geschlossen wird.
+
+**string ConvertExponentToPow(string paranthase)**
+Diese Methode wandelt die Schreibweise von `a^b`in `Math.Pow(a, b)` um.
+
+**string ConvertCurrentLevelParantatheses(string level)**
+Diese Methode wandelt das aktuelle Klammern "Level" entsprechend ConvertExponent um. Dabei wird per Rekursion zunächst die "am tiefsten" liegende Klammer gewandelt und dann immer weiter nach außen gegangen.
+
+#### Weitere Dateien
+Es gibt noch einige weitere Dateien im Projekt, die jedoch von Visual Studio automatisch instantiiert und dann nicht weiter von uns verändert wurden, sodass diese keinen Platz in dieser Dokumentation finden.
 
 ## Die Bot-Api
 ## Der Server
