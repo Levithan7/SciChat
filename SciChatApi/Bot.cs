@@ -18,7 +18,7 @@ namespace SciChatApi
 
         private List<Message> ReceivedMessages { get; set; } = new List<Message>();
         private static HttpClient client = new HttpClient();
-        private static string serverurl = "https://localhost:7234/api/Server";
+        private static string serverurl = $"{Constants.APIURL}/api/Server";
         
         public List<Message> GetSentMessages()
         {
@@ -66,11 +66,14 @@ namespace SciChatApi
 
         private static void PostData(string url, Dictionary<string, string> parameters)
         {
-            var content = new FormUrlEncodedContent(parameters);
+            //var content = new FormUrlEncodedContent(parameters);
+            //var json = JsonSerializer.Serialize(parameters);
+            string queryString = string.Join("&", parameters.Select(x => $"{x.Key}={Uri.EscapeDataString(x.Value)}"));
 
-            var task = client.PostAsync(url, content);
+            string fullUrl = $"{url}?{queryString}";
+
+            var task = client.PostAsync(fullUrl, null);
             task.Wait();
-            var success = task.IsCompletedSuccessfully;
         }
     }
 }

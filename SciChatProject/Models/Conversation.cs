@@ -13,7 +13,7 @@
 
         public List<User> GetUsers()
         {
-            return DataBaseHelper.GetObjects<UserConversationLink>().Where(x=>x.ConversationID==id).Select(x=>User.GetUserById(x.UserID)).ToList();
+            return DataBaseHelper.GetObjects<UserConversationLink>().Where(x=>x.ConversationID==id).Select(x=>User.GetUserByID(x.UserID)).ToList();
         }
 
 		public void AddUserToConversation(User user)

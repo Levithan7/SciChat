@@ -21,7 +21,7 @@ namespace Server.Controllers
         [HttpGet("convsByUserID")]
         public IActionResult GetConversationsByUserID(int userid)
         {
-            var json = JsonSerializer.Serialize(SciChatProject.Models.User.GetUserById(userid).GetConversations());
+            var json = JsonSerializer.Serialize(SciChatProject.Models.User.GetUserByID(userid).GetConversations());
             return Ok(json);
         }
 
@@ -42,7 +42,7 @@ namespace Server.Controllers
         [HttpGet("userReceivedMessagesByID")]
         public IActionResult GetUserReceivedMessages(int userid, bool includeOwn=false)
         {
-            var messages = SciChatProject.Models.User.GetUserById(userid).GetConversations().SelectMany(x=>x.GetMessages()).ToList();
+            var messages = SciChatProject.Models.User.GetUserByID(userid).GetConversations().SelectMany(x=>x.GetMessages()).ToList();
             if (!includeOwn)
                 messages.RemoveAll(x=>x.UserID==userid);
             var json = JsonSerializer.Serialize(messages);
@@ -52,7 +52,7 @@ namespace Server.Controllers
         [HttpGet("userSentMessagesByID")]
         public IActionResult GetUserSentMessages(int userid)
         {
-            var messages = SciChatProject.Models.User.GetUserById(userid).GetMessages();
+            var messages = SciChatProject.Models.User.GetUserByID(userid).GetMessages();
             var json = JsonSerializer.Serialize(messages);
             return Ok(json);
         }

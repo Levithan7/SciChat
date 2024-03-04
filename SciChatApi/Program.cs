@@ -11,9 +11,9 @@ namespace SciChatApi
         {
             Bot bot = new Bot { BotName="testbot", id=1};
             bot.UpdateReceivedMessages(); // gets all the messages that were ever posted within all conversations the bot is in
-            while(true)
+            bot.SendMessage("HELLO BY BOT", 1);
+            while (true)
             {
-                bot.SendMessage("HELLO", 1);
                 var newmsg = bot.UpdateReceivedMessages();
                 foreach(var msg in newmsg)
                 {
