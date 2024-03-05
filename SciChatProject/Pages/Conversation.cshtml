@@ -5,18 +5,33 @@
 	string buff = ":";
 }
 
+<script src="_framework/blazor.server.js"></script>
+<script>
+	function back(){
+		window.location.href = "/index";
+	}
+	function refreshPage() {
+		location.reload();
+	}
+	setInterval(refreshPage, 10000);
+</script>
+
 <p>
-	<form id="message" method="post">
+	<form id="messagebuttons" method="post">
 	<input type="submit" name="sendmessage" value="Send" />
-	<input type="text" name="contentmessage" placeholder="Message" /><br/>
+	<input type="text" name="contentmessage" placeholder="Message" />
+	<input type="button" name="backbutton" value="Back" onclick="back()" /> <br />
+	</form>
+	<form id="message">
 	@foreach (var message in Models.Conversation.GetConversationByID(Int32.Parse(convid)).GetMessages())
 	{
 		<br /> @message.GetUser().UsernameTEST
 		@buff
 		<br /> @message.Content
 	}
-	
 	</form>
+	
+	
 </p>
 
 

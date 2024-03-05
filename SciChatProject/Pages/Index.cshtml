@@ -14,8 +14,17 @@
         <br />
         
     }
-    <form id="disconnect" method="post">
+    @HttpContext.Session.GetString("test1")
+    <br />
+    @HttpContext.Session.GetString("test2")
+    <br />
+    @HttpContext.Session.GetInt32("idlogin")
+    <br />
+    <form id="disconnectandadd" method="post">
     <input value="disconnect" type="submit" name="disconnectbutton" />
+    <input type="text" placeholder="Username" name="adduname" />
+    <input type="text" placeholder="Conversationname" name="addcname" />
+    <input value="add" type="submit" name="addbutton" />
     </form>
 </p>
 

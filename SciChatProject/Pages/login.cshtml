@@ -6,10 +6,17 @@
 
 }
 <p>
+    <div>Log in here:</div>
     <form id="loginform" method="post">
         <input type="text" placeholder="Id" name="loginid" />
         <input type="password" placeholder="Password" name="loginpassword" />
         <input type="submit" value="Log in" name="loginsubmit" />
     </form> 
+    <div>or sign up here:</div>
+    <form id="signupform" method="post">
+        <input type="text" placeholder="Name" name="signupname" />
+        <input type="password" placeholder="Password" name="signuppassword" />
+        <input type="submit" value="Sign up" name="signupsubmit" />
+    </form>
     @HttpContext.Session.GetString("error")
 </p>

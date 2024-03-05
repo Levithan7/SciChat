@@ -18,9 +18,9 @@ namespace SciChatProject.Pages
         }
 		public void OnPost() 
 		{
-			string content = Request.Form["contentmessage"];
-			Models.Message.SendMessage(content, 1, 1);
+            string content = Request.Form["contentmessage"];
+		    Models.Message.SendMessage(content, 1, 1);
 		}
-
+ 
 	}
 }

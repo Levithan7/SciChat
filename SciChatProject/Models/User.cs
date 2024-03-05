@@ -4,7 +4,7 @@
     {
         public static string? TableName { get; set; } = "users";
         public int id { get; set; }
-        public string? password { get; set; }
+        [SQLProperty(Name ="password")] public string? Password { get; set; }
         [SQLProperty(Name="username")] public string? UsernameTEST { get; set; }
 
         public List<Message> GetMessages()
@@ -17,14 +17,19 @@
             return DataBaseHelper.GetObjects<Conversation>().Where(x => x.GetUsers().Any(x => x.id == id)).ToList();
         }
 
-        public void PutUserInDataBase()
+        public static void PutUserInDataBase(string pass, string u)
         {
-            DataBaseHelper.ExecuteChange(TableName, new List<User> { this }, DataBaseHelper.ChangeType.Insert);
+            DataBaseHelper.ExecuteChange(TableName, new List<User> { new Models.User { Password = pass, UsernameTEST = u } }, DataBaseHelper.ChangeType.Insert);
         }
 
         public static User GetUserByID(int id)
         {
             return DataBaseHelper.GetObjects<User>().First(x => x.id == id);
+        }
+
+        public static User GetLastUser()
+        {
+            return DataBaseHelper.GetObjects<User>().Last();
         }
 
         public static int GetIDByID(int id)
@@ -39,11 +44,23 @@
             }
         }
 
+        public static int GetIDByName(string name)
+        {
+            try
+            {
+                return DataBaseHelper.GetObjects<User>().First(x => x.UsernameTEST == name).id;
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }
+        }
+
         public static bool PasswordTrue(int id, string pw)
         {
             try
             {
-                return pw == DataBaseHelper.GetObjects<User>().First(x => x.id == id).password;
+                return pw == DataBaseHelper.GetObjects<User>().First(x => x.id == id).Password;
             }
             catch (Exception e)
             {
