@@ -4,7 +4,7 @@
     {
         public static string? TableName { get; set; } = "users";
         public int id { get; set; }
-        [SQLProperty(Name="username")] public string? UsernameTEST { get; set; }
+        [SQLProperty(Name="username")] public string? UserName { get; set; }
 
         public List<Message> GetMessages()
         {
@@ -19,6 +19,11 @@
         public void PutUserInDataBase()
         {
             DataBaseHelper.ExecuteChange(TableName, new List<User> { this }, DataBaseHelper.ChangeType.Insert);
+        }
+
+        public static User GetUserByID(int id)
+        {
+            return DataBaseHelper.GetObjects<User>().First(x => x.id == id);
         }
     }
 }

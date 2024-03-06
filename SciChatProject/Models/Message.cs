@@ -5,7 +5,11 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
+using System.Reflection.Emit;
 using System.Reflection.Metadata;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
 namespace SciChatProject.Models
@@ -27,7 +31,7 @@ namespace SciChatProject.Models
         }
         private static void SendMessage(Message message)
         {
-            DataBaseHelper.ExecuteChange("messagestable", new List<Message> { message}, DataBaseHelper.ChangeType.Insert);
+            DataBaseHelper.ExecuteChange("messagestable", new List<Message> { message }, DataBaseHelper.ChangeType.Insert);
         }
 
         public User GetUser()
@@ -90,7 +94,7 @@ namespace SciChatProject.Models
         public static string CreateGraph(string gb)
         {
             #region defaultvalues
-            string plottype = "scatter", xlabel=string.Empty, ylabel=string.Empty;
+            string plottype = "scatter", xlabel=string.Empty, ylabel=string.Empty, datatype=string.Empty;
             double[] xdata = Array.Empty<double>(), ydata = Array.Empty<double>();
             int[] scale = { 100, 100};
             double? xmin = null, xmax = null, ymin = null, ymax = null;
@@ -111,6 +115,12 @@ namespace SciChatProject.Models
             if ((m = Regex.Match(gb, @"\\scale=\'(?<scale>\d+x\d+)\'")).Success)
             {
                 scale = m.Groups["scale"].Value.Split("x").Select(x=>int.Parse(x)).ToArray();
+            }
+
+            // Data Type:
+            if ((m = Regex.Match(gb, @"\\datatype\=\'(?<datatype>.+?)\'")).Success)
+            {
+                datatype = m.Groups["datatype"].Value;
             }
             #endregion general
 
@@ -156,10 +166,19 @@ namespace SciChatProject.Models
             #endregion graphsettings
 
             #region data
+            #region function
+            if ((m = Regex.Match(gb, @"\\function\=\'(?<function>.+?)\'")).Success)
+            {
+                var functionStr = m.Groups["function"].Value;
+                var function = StringToLambda(functionStr);
+                myPlot.Add.Function(function);
+            }
+            #endregion function
+
+            #region rawdata
             // xdata:
             if ((m = Regex.Match(gb, @"\\xdata\=\[(?<xdata>.+?)\]")).Success)
             {
-                var test = m.Groups["xdata"].Value.Split(",");
                 xdata = m.Groups["xdata"].Value.Split(",").Select(x=>double.Parse(x)).ToArray();
             }
 
@@ -183,6 +202,7 @@ namespace SciChatProject.Models
                     xydata = xydata.Replace(m.Value, "");   
                 }
             }
+            #endregion rawdata
             #endregion data
 
             #region plotcreation
@@ -215,5 +235,137 @@ namespace SciChatProject.Models
             #endregion plotcreation
         }
         #endregion MessageParser
+
+        private static Func<double, double> StringToLambda(string expression)
+        {
+            return DynamicExpressionParser.ParseLambda<double, double>(new ParsingConfig(), true, $"x=>{MathToLambda(expression)}").Compile();
+        }
+
+        private static string MathToLambda(string math)
+        {
+            // Generiert mit ChatGPT nach einer selbst erstellten Vorlage:
+            var converter = new KeyValuePair<string, string>[]
+            {
+                new("e", "Math.E"),
+                new("pi", "Math.PI"),
+                new("abs", "Math.Abs"),
+                new("acos", "Math.Acos"),
+                new("asin", "Math.Asin"),
+                new("atan", "Math.Atan"),
+                new("atan2", "Math.Atan2"),
+                new("ceiling", "Math.Ceiling"),
+                new("cos", "Math.Cos"),
+                new("cosh", "Math.Cosh"),
+                new("exp", "Math.Exp"),
+                new("floor", "Math.Floor"),
+                new("log", "Math.Log"),
+                new("log10", "Math.Log10"),
+                new("max", "Math.Max"),
+                new("min", "Math.Min"),
+                new("pow", "Math.Pow"),
+                new("round", "Math.Round"),
+                new("sign", "Math.Sign"),
+                new("sin", "Math.Sin"),
+                new("sinh", "Math.Sinh"),
+                new("sqrt", "Math.Sqrt"),
+                new("tan", "Math.Tan"),
+                new("tanh", "Math.Tanh"),
+                new("truncate", "Math.Truncate")
+            };
+
+            foreach(var conversion in converter)
+            {
+                math = math.Replace(conversion.Key, conversion.Value);
+            }
+            var final = ConvertCurrentLevelParantatheses(math);
+            return final;
+        }
+
+        public static int FindControParan(int idx, string test, int direction, bool returnCharacterIfNoParan=false) // direction 1-> forward ) searched -1-> backward ( searched
+        {
+            char lookedFor='!';
+            char lookedForContra;
+
+            lookedFor = direction == 1 ? ')' : (direction == -1 ? '(' : '!');
+            lookedForContra = lookedFor == ')' ? '(' : ')';
+
+            var charAtPosition = test[idx];
+            if (charAtPosition != lookedForContra)
+            {
+                if (returnCharacterIfNoParan)
+                    return idx;
+                throw new Exception($"No {lookedForContra} at given index {idx}!");
+            }
+            if (lookedFor == '!')
+                throw new Exception($"Direction {direction} is invalid (has to be -1 or 1)!");
+
+            int lookedForExcess = 1;
+            while(lookedForExcess != 0)
+            {
+                idx+=direction;
+                charAtPosition = test[idx];
+                lookedForExcess += charAtPosition == lookedFor ? -1 : (charAtPosition == lookedForContra ? 1 : 0);
+            }
+            return idx;
+        }
+
+        public static string ConvertExponentToPow(string paranthase)
+        {
+            Match m;
+            if ((m = Regex.Match(paranthase, @"(?<base>.+)\^(?<exp>.+)")).Success)
+            {
+                var powbase = m.Groups["base"].Value;
+                powbase = powbase.Substring(FindControParan(powbase.Length - 1, powbase, -1, true));
+
+                var powexp = m.Groups["exp"].Value;
+                powexp = powexp.Substring(0, FindControParan(0, powexp, 1, true) +1);
+                
+                paranthase = paranthase.Replace($"{powbase}^{powexp}", $"Math.Pow({powbase}, {powexp})");
+            }
+            return paranthase;
+        }
+
+        public static string ConvertCurrentLevelParantatheses(string level)
+        {
+            var children = new List<string>();
+            int leftOpen = 0;
+            var currentString = string.Empty;
+
+            foreach(var i in level)
+            {
+                if (currentString == string.Empty && i != '(')
+                    continue;
+
+                currentString += i;
+                leftOpen += Convert.ToInt16(i == '(');
+                leftOpen -= Convert.ToInt16(i == ')');
+                if(leftOpen==0 && currentString!=string.Empty && currentString.StartsWith("("))
+                {
+                    children.Add(currentString);
+                    currentString = string.Empty;
+                }
+            }
+
+            var result = level;
+            
+            if(children.Count() != 0)
+            {
+                foreach(var j in children)
+                {
+                    var replacement = j;
+                    if(replacement.StartsWith("("))
+                        replacement = replacement.Substring(1);
+                    if (replacement.EndsWith(")"))
+                        replacement = replacement.Substring(0, replacement.Length - 1);
+
+                    replacement = ConvertCurrentLevelParantatheses(replacement);
+                    result = result.Replace(j, $"({replacement})");
+                }
+            }
+
+            var final = ConvertExponentToPow(result);
+            return final;
+        }
     }
+
 }

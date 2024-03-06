@@ -8,15 +8,15 @@
 
         public List<Message> GetMessages()
         {
-            return DataBaseHelper.GetObjects<Message>().Where(x => x.ConversationID==id).ToList();
+            return DataBaseHelper.GetObjects<Message>().Where(x => x.ConversationID==id).OrderByDescending(x => x.id).ToList();
         }
 
         public List<User> GetUsers()
         {
-            return DataBaseHelper.GetObjects<UserConversationLink>().Where(x=>x.ConversationID==id).Select(x=>new User { id=x.UserID }).ToList();
+            return DataBaseHelper.GetObjects<UserConversationLink>().Where(x=>x.ConversationID==id).Select(x=>User.GetUserByID(x.UserID)).ToList();
         }
 
-        public void AddUserToConversation(User user)
+		public void AddUserToConversation(User user)
         {
             UserConversationLink link = new UserConversationLink { UserID = user.id, ConversationID = id };
             DataBaseHelper.ExecuteChange(UserConversationLink.TableName, new List<UserConversationLink>{link}, DataBaseHelper.ChangeType.Insert);
@@ -26,5 +26,5 @@
         {
             return DataBaseHelper.GetObjects<Conversation>().First(x=>x.id==id);
         }
-    }
+	}
 }
