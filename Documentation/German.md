@@ -110,4 +110,40 @@ Diese Methode wandelt das aktuelle Klammern "Level" entsprechend ConvertExponent
 Es gibt noch einige weitere Dateien im Projekt, die jedoch von Visual Studio automatisch instantiiert und dann nicht weiter von uns verändert wurden, sodass diese keinen Platz in dieser Dokumentation finden.
 
 ## Die Bot-Api
+Die Bot-Api kann verwendet werden, um Computergesteuerte User zu entwickeln bspw. zur Ausführung erstellter Commands. Die API ist nicht sehr ausgearbeitet, da sie nur einen nebensächlichen Teil des Projektes darstellt. Trotzdem sollte sie ausreichen, um grundlegende Funktionalität eines Bots (vergleichbar mit älteren Discord Bots) zu implementieren.
+Die Bot-Api ist dabei per Github zu klonen. In einer Datei `Program.cs` kann der entsprechende Bot-Developer dann seinen Bot programmieren.
+In der vorgefertigten `Bot.cs` liegt die Vorlage für einen Bot. Dabei ist zu beachten, dass der Bot niemals direkt auf die Datenbank zugreift sondern stattdessen einen Request an
+den Server schickt, der dann prüft, ob die korrekten Anmeldeinformationen für den Bot vorliegen.
+
+### Bot.cs
+**List<Message> GetSentMessage()**
+In dieser Methode werden alle Nachrichten abgerufen, die der Bot jemals gesendet hat.
+
+**List<Message> GetSentReceivedMessages(bool update = false)**
+Diese Methode gibt alle Nachrichten zurück, der der User jemals erhalten hat.
+Wird update dabei auf `true` gesetzt, so werden die Nachricht für der Rückgabe nocheinmal per
+Server Request aktualisiert.
+
+**List<Conversation>? GetConversations()**
+Gibt eine Liste mit allen Conversations zurück. TODO: Ist er in keiner Conversation soll eine leere Liste
+statt null zurückgegeben werden.
+
+**void SendMessage(string content, int convID)**
+Diese Methode lässt den Bot eine Nachricht senden.
+
+**List<Message> UppdateReceivedMessages()**
+Dies Methode gibt alle Nachrichten zurück, die der Bot seit der letzten Aktualisierung erhalten hat.
+
+**static string FetchData(string request)**
+Diese Methode wird im allgemeinen verwendet, um Get-Requests an den Server zu schicken.
+
+**static void PostData(string url, Dictionary<string, string> parameters)**
+Diese Methode wird im allgemeinen verwendet, um Post-Requests an den Server zu schicken.
+Dabei wird zunächst ein entsprechender Query über die angegebenen Paramter erstellt.
+
 ## Der Server
+Der `Server` ist das dritte und als letztes erstellte Unterprojekt von `SciChat`.
+Wie bereits beschrieben wird es primär verwendet, um Requests des Bots abzufragen. Der Server ist in Bezug auf Passwort Implementation noch nicht fertig entwickelt.
+
+### Controllers.ServerController.cs
+Das ist die einzige modifizierte Datei, die nicht zu 100% von Visual Studio erstellt wurde. Der Rest sind Projektdateien. 
