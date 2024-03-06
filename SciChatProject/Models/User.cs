@@ -5,7 +5,7 @@
         public static string? TableName { get; set; } = "users";
         public int id { get; set; }
         [SQLProperty(Name ="password")] public string? Password { get; set; }
-        [SQLProperty(Name="username")] public string? UsernameTEST { get; set; }
+        [SQLProperty(Name="username")] public string? Username { get; set; }
 
         public List<Message> GetMessages()
         {
@@ -19,7 +19,7 @@
 
         public static void PutUserInDataBase(string pass, string u)
         {
-            DataBaseHelper.ExecuteChange(TableName, new List<User> { new Models.User { Password = pass, UsernameTEST = u } }, DataBaseHelper.ChangeType.Insert);
+            DataBaseHelper.ExecuteChange(TableName, new List<User> { new Models.User { Password = pass, Username = u } }, DataBaseHelper.ChangeType.Insert);
         }
 
         public static User GetUserByID(int id)
@@ -48,7 +48,7 @@
         {
             try
             {
-                return DataBaseHelper.GetObjects<User>().First(x => x.UsernameTEST == name).id;
+                return DataBaseHelper.GetObjects<User>().First(x => x.Username == name).id;
             }
             catch (Exception e)
             {

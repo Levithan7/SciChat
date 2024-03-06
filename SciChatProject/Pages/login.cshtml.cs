@@ -5,7 +5,6 @@ namespace SciChatProject.Pages
 {
     public class loginModel : PageModel
     {
-        public int buff = 0;
         public void OnGet()
         {
             
@@ -20,17 +19,17 @@ namespace SciChatProject.Pages
             {
                 u = Request.Form["signupname"];
                 pass = Request.Form["signuppassword"];
-                user = Models.User.GetIDByID(Int32.Parse(Request.Form["loginid"]));
+                user = Models.User.GetIDByName(Request.Form["loginname"]);
             }
             catch
             {
             }
             if(user != 0 )
             {
-                bool passwordToF = Models.User.PasswordTrue(Int32.Parse(Request.Form["loginid"]), Request.Form["loginpassword"]);
+                bool passwordToF = Models.User.PasswordTrue(user, Request.Form["loginpassword"]);
                 if (passwordToF == true)
                 {
-                    HttpContext.Session.SetInt32("idlogin", Int32.Parse(Request.Form["loginid"]));
+                    HttpContext.Session.SetInt32("idlogin", user);
 					string url = "/Index";
                     return Redirect(url);
 
@@ -45,10 +44,7 @@ namespace SciChatProject.Pages
             if (string.Empty.Equals(u) == false)
             {
                 Models.User.PutUserInDataBase(pass, u);
-                HttpContext.Session.SetString("test1", pass);
-                HttpContext.Session.SetString("test2", u);
                 HttpContext.Session.SetInt32("idlogin", Models.User.GetLastUser().id);
-                buff += 1;
                 string url = "/Index";
                 return Redirect(url);
             }

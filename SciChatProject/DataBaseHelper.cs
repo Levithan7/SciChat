@@ -7,7 +7,7 @@ namespace SciChatProject
 {
     public static class DataBaseHelper
     {
-        public static string ConnectionString = "";
+        public static string ConnectionString = Constants.CONNECTIONSTRING;
         
         static public SqlConnection CreateConnection()
         {

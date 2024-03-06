@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SciChatProject.Models;
 using Microsoft.AspNetCore.Http;
-using NuGet.Protocol.Plugins;
 using Microsoft.AspNetCore.Authentication;
 using System.Xml.Linq;
 
@@ -40,17 +39,20 @@ namespace SciChatProject.Pages
             catch
             {
             }
-            if(string.Empty.Equals(u) == false)
+            if(string.Empty.Equals(u) == false && string.Empty.Equals(c) == false)
             {
-                int id = Models.User.GetIDByName(u);
-                new Models.Conversation.AddUserToConversation(Models.User.GetUserByID(id));
+                int id1 = Models.User.GetIDByName(u);
+                int id2 = (int)HttpContext.Session.GetInt32("idlogin");
+                Models.Conversation.AddUserToNewConversation(Models.User.GetUserByID(id1),Models.User.GetUserByID(id2), c);
 
             }
-            HttpContext.Session.Remove("idlogin");
-            string url = "/login";
-            return Redirect(url);
-
-            
+            else
+            {
+                HttpContext.Session.Remove("idlogin");
+                string url = "/login";
+                return Redirect(url);
+            }
+            return Page();           
         }
     }
 }

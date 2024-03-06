@@ -22,10 +22,11 @@
             DataBaseHelper.ExecuteChange(UserConversationLink.TableName, new List<UserConversationLink>{link}, DataBaseHelper.ChangeType.Insert);
         }
 
-        public void AddUserToNewConversation(User user,string name)
+        public static void AddUserToNewConversation(User user1,User user2,string name)
         {
             DataBaseHelper.ExecuteChange(TableName, new List<Conversation> { new Models.Conversation { ConversationName = name} }, DataBaseHelper.ChangeType.Insert);
-            AddUserToConversation(user);
+            DataBaseHelper.GetObjects<Conversation>().Last().AddUserToConversation(user1);
+            DataBaseHelper.GetObjects<Conversation>().Last().AddUserToConversation(user2);
         }
         
         public static Conversation GetConversationByID(int id)

@@ -25,7 +25,7 @@
 	<form id="message">
 	@foreach (var message in Models.Conversation.GetConversationByID(Int32.Parse(convid)).GetMessages())
 	{
-		<br /> @message.GetUser().UsernameTEST
+		<br /> @message.GetUser().Username
 		@buff
 		<br /> @message.Content
 	}
