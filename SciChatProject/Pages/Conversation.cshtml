@@ -13,7 +13,7 @@
 	function refreshPage() {
 		location.reload();
 	}
-	setInterval(refreshPage, 10000);
+	setInterval(refreshPage, 100000);
 </script>
 
 <p>
@@ -21,6 +21,8 @@
 	<input type="submit" name="sendmessage" value="Send" />
 	<input type="text" name="contentmessage" placeholder="Message" />
 	<input type="button" name="backbutton" value="Back" onclick="back()" /> <br />
+	<input type="text" name="adduser" placeholder="Username" />
+	<input type="submit" name="addbutton" value="Add" /> <br />
 	</form>
 	<form id="message">
 	@foreach (var message in Models.Conversation.GetConversationByID(Int32.Parse(convid)).GetMessages())

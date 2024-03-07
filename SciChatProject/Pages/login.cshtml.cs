@@ -12,19 +12,13 @@ namespace SciChatProject.Pages
 
         public IActionResult OnPost()
         {
-            string u = string.Empty;
+            int u = 0;
             string pass = string.Empty;
             int user = 0;
-            try
-            {
-                u = Request.Form["signupname"];
-                pass = Request.Form["signuppassword"];
-                user = Models.User.GetIDByName(Request.Form["loginname"]);
-            }
-            catch
-            {
-            }
-            if(user != 0 )
+            u = Models.User.GetIDByName(Request.Form["signupname"]);
+            pass = Request.Form["signuppassword"];
+            user = Models.User.GetIDByName(Request.Form["loginname"]);
+			if (user != 0)
             {
                 bool passwordToF = Models.User.PasswordTrue(user, Request.Form["loginpassword"]);
                 if (passwordToF == true)
@@ -40,15 +34,14 @@ namespace SciChatProject.Pages
                     return Page();
                 }
             }
-            
-            if (string.Empty.Equals(u) == false)
+            else if (u != 0)
             {
-                Models.User.PutUserInDataBase(pass, u);
+                Models.User.PutUserInDataBase(pass, Request.Form["signupname"]);
                 HttpContext.Session.SetInt32("idlogin", Models.User.GetLastUser().id);
                 string url = "/Index";
                 return Redirect(url);
             }
-            return Page();
+			return Page();
 
         }
     }

@@ -7,6 +7,7 @@
 }
 
 <p>
+    @Models.User.GetUserByID(HttpContext.Session.GetInt32("idlogin").Value).Username
     @foreach (var conv in Models.User.GetUserByID(login).GetConversations())
     {
         <br />

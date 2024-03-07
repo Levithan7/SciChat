@@ -16,10 +16,27 @@ namespace SciChatProject.Pages
             string url = "/login";
             return Redirect(url);
         }
-		public void OnPost() 
+		public IActionResult OnPost() 
 		{
-            string content = Request.Form["contentmessage"];
-		    Models.Message.SendMessage(content, 1, 1);
+			int u = 0;
+			try
+			{
+				u = Models.User.GetIDByName(Request.Form["adduser"]);
+			}
+			catch
+			{
+			}
+			if (u != 0)
+			{
+				Models.Conversation.GetConversationByID(Int32.Parse(Request.Query["conversationid"])).AddUserToConversation(Models.User.GetUserByID(u));
+
+			}
+			else
+			{
+				string content = Request.Form["contentmessage"];
+				Models.Message.SendMessage(content, HttpContext.Session.GetInt32("idlogin").Value, Int32.Parse(Request.Query["conversationid"]));
+			}
+			return Page();
 		}
  
 	}
