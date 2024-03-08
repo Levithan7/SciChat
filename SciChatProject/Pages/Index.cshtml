@@ -1,18 +1,27 @@
 ﻿@page
+@using Microsoft.AspNetCore.Http
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
-    int i = 1;
-    string n = Models.Conversation.GetConversationByID(i).ConversationName;
+    int login = HttpContext.Session.GetInt32("idlogin").Value;
 }
 
 <p>
-    @foreach (var conv in Models.User.GetUserByID(i).GetConversations())
+    @Models.User.GetUserByID(HttpContext.Session.GetInt32("idlogin").Value).Username
+    @foreach (var conv in Models.User.GetUserByID(login).GetConversations())
     {
         <br />
-        <a href="@Constants.HOSTURL/conversation?conversationid=@conv.id" , target="_blank" class="btn btn-dark">@conv.ConversationName</a>
+        <a href="https://localhost:7030/conversation?conversationid=@conv.id" name="chatbutton" target="_blank" class="btn btn-dark">@conv.ConversationName</a>
         <br />
+        
     }
+    <form id="disconnectandadd" method="post">
+    <input value="disconnect" type="submit" name="disconnectbutton" />
+    <input type="text" placeholder="Username" name="adduname" />
+    <input type="text" placeholder="Conversationname" name="addcname" />
+    <input value="add" type="submit" name="addbutton" />
+    </form>
 </p>
+
 
 
