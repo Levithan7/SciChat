@@ -9,9 +9,14 @@ namespace SciChatApi
     {
         static void Main(string[] args)
         {
-            Bot bot = new Bot { BotName="testbot", id=1};
-            bot.UpdateReceivedMessages(); // gets all the messages that were ever posted within all conversations the bot is in
-            bot.SendMessage("HELLO BY BOT", 1);
+            Bot bot = new Bot { id=1, Password="123"};
+            bot.UpdateReceivedMessages();
+
+            foreach(var conv in bot.GetConversations())
+            {
+                bot.SendMessage("Bot started!", conv.id);
+            }
+
             while (true)
             {
                 var newmsg = bot.UpdateReceivedMessages();

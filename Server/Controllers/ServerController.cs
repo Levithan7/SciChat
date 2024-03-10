@@ -4,6 +4,7 @@ using System.Text.Json;
 using SciChatProject;
 using SciChatProject.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Server.Controllers
 {
@@ -11,38 +12,55 @@ namespace Server.Controllers
     [ApiController]
     public class ServerController : ControllerBase
     {
+        // u (user ID) and p (user password) are used for authentication
+
         [HttpGet("convByID")]
-        public IActionResult GetConversation(int id)
+        public IActionResult GetConversation(int id, int u, string p)
         {
+            if(!SciChatProject.Models.User.PasswordTrue(u, p))
+                return Unauthorized($"Wrong credentials for user {u}");
+
             var json = JsonSerializer.Serialize(Conversation.GetConversationByID(id));
             return Ok(json);
         }
 
         [HttpGet("convsByUserID")]
-        public IActionResult GetConversationsByUserID(int userid)
+        public IActionResult GetConversationsByUserID(int userid, int u, string p)
         {
-            var json = JsonSerializer.Serialize(SciChatProject.Models.User.GetUserByID(userid).GetConversations());
+			if (!SciChatProject.Models.User.PasswordTrue(u, p))
+				return Unauthorized($"Wrong credentials for user {u}");
+
+			var json = JsonSerializer.Serialize(SciChatProject.Models.User.GetUserByID(userid).GetConversations());
             return Ok(json);
         }
 
         [HttpGet("convMembersByID")]
-        public IActionResult GetConversationMembers(int id) 
+        public IActionResult GetConversationMembers(int id, int u, string p) 
         {
-            var json = JsonSerializer.Serialize(Conversation.GetConversationByID(id).GetUsers());
+			if (!SciChatProject.Models.User.PasswordTrue(u, p))
+				return Unauthorized($"Wrong credentials for user {u}");
+
+			var json = JsonSerializer.Serialize(Conversation.GetConversationByID(id).GetUsers());
             return Ok(json);
         }
 
         [HttpGet("convMessagesByID")]
-        public IActionResult GetConversationMessages(int id)
+        public IActionResult GetConversationMessages(int id, int u, string p)
         {
-            var json = JsonSerializer.Serialize(Conversation.GetConversationByID(id).GetMessages());
+			if (!SciChatProject.Models.User.PasswordTrue(u, p))
+				return Unauthorized($"Wrong credentials for user {u}");
+
+			var json = JsonSerializer.Serialize(Conversation.GetConversationByID(id).GetMessages());
             return Ok(json);
         }
 
         [HttpGet("userReceivedMessagesByID")]
-        public IActionResult GetUserReceivedMessages(int userid, bool includeOwn=false)
+        public IActionResult GetUserReceivedMessages(int userid, int u, string p, bool includeOwn=false)
         {
-            var messages = SciChatProject.Models.User.GetUserByID(userid).GetConversations().SelectMany(x=>x.GetMessages()).ToList();
+			if (!SciChatProject.Models.User.PasswordTrue(u, p))
+				return Unauthorized($"Wrong credentials for user {u}");
+
+			var messages = SciChatProject.Models.User.GetUserByID(userid).GetConversations().SelectMany(x=>x.GetMessages()).ToList();
             if (!includeOwn)
                 messages.RemoveAll(x=>x.UserID==userid);
             var json = JsonSerializer.Serialize(messages);
@@ -50,17 +68,23 @@ namespace Server.Controllers
         }
 
         [HttpGet("userSentMessagesByID")]
-        public IActionResult GetUserSentMessages(int userid)
+        public IActionResult GetUserSentMessages(int userid, int u, string p)
         {
-            var messages = SciChatProject.Models.User.GetUserByID(userid).GetMessages();
+			if (!SciChatProject.Models.User.PasswordTrue(u, p))
+				return Unauthorized($"Wrong credentials for user {u}");
+
+			var messages = SciChatProject.Models.User.GetUserByID(userid).GetMessages();
             var json = JsonSerializer.Serialize(messages);
             return Ok(json);
         }
 
         [HttpPost("addmessage")]
-        public IActionResult AddMessage(int userid, int conversationid, string content)
+        public IActionResult AddMessage(int userid, int conversationid, string content, int u, string p)
         {
-            Message.SendMessage(content, userid, conversationid);
+			if (!SciChatProject.Models.User.PasswordTrue(u, p))
+				return Unauthorized($"Wrong credentials for user {u}");
+
+			Message.SendMessage(content, userid, conversationid);
             return Ok("Message Sent!");
         }
     }

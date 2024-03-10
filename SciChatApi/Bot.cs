@@ -1,28 +1,32 @@
-﻿using SciChatProject;
-using SciChatProject.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Text.Json;
+using SciChatApi.Models;
 
 namespace SciChatApi
 {
-    internal class Bot
+    internal class Bot : User
     {
-        private static string? TableName { get; set; } = "users";
-        public int id { get; set; }
-        [SQLProperty(Name = "username")] public string? BotName { get; set; }
-
         private List<Message> ReceivedMessages { get; set; } = new List<Message>();
         private static HttpClient client = new HttpClient();
         private static string serverurl = $"{Constants.APIURL}/api/Server";
-        
+      
+
+        // TODO
+        public User? GetUserById()
+        {
+            var param = new Dictionary<string, string>();
+            return JsonSerializer.Deserialize<User>(this.FetchViaParam("", param));
+        }
+
         public List<Message> GetSentMessages()
         {
-            return JsonSerializer.Deserialize<List<Message>>(FetchData($"{serverurl}/convsByUserID&userid={id}"));
+            var param = new Dictionary<string, string>() { { "userid", $"{id}"} };
+            return JsonSerializer.Deserialize<List<Message>>(this.FetchViaParam("convsByUserID", param)) ?? new List<Message>();
         }
 
         public List<Message> GetReceivedmessages(bool update = false)
@@ -32,9 +36,10 @@ namespace SciChatApi
             return ReceivedMessages;
         }
 
-        public List<Conversation>? GetConversations()
+        public List<Conversation> GetConversations()
         {
-            return JsonSerializer.Deserialize<List<Conversation>>(FetchData($"{serverurl}/convsByUserID?userid={id}"));
+            var param = new Dictionary<string, string>() { { "userid", $"{id}" } };
+            return JsonSerializer.Deserialize<List<Conversation>>(this.FetchViaParam("convsByUserID", param)) ?? new List<Conversation>();
         }
 
         public void SendMessage(string content, int convID)
@@ -45,16 +50,30 @@ namespace SciChatApi
                 {"conversationid", convID.ToString() },
                 {"content", content}
             };
-            PostData($"{serverurl}/addmessage", parameters);
+            this.PostData($"{serverurl}/addmessage", parameters);
         }
 
         public List<Message> UpdateReceivedMessages()
         {
-            var allMessages = JsonSerializer.Deserialize<List<Message>>(FetchData($"{serverurl}/userReceivedMessagesByID?userid={id}&includeOwn=false"));
+            var param = new Dictionary<string, string> { { "userid", $"{id}" }, { "includeOwn", "false" } };
+            var allMessages = JsonSerializer.Deserialize<List<Message>>(this.FetchViaParam("userReceivedMessagesByID", param)) ?? new List<Message>();
             var newMessages = allMessages.Where(x => !ReceivedMessages.Select(y=>y.id).Contains(x.id)).ToList();
             ReceivedMessages = allMessages;
             return newMessages;
         }
+
+        private string FetchViaParam(string suburl, Dictionary<string, string> parameters, bool addCredentials = true)
+        {
+			parameters = AddCredentials(parameters, addCredentials);
+			return FetchViaParam(suburl, parameters);
+        }
+
+        private static string FetchViaParam(string suburl, Dictionary<string, string> parameters)
+        {
+            suburl.TrimStart('/');
+			string queryString = $"{serverurl}/{suburl}?" + string.Join("&", parameters.Select(x => $"{x.Key}={Uri.EscapeDataString(x.Value)}"));
+            return FetchData(queryString);
+		}
 
         private static string FetchData(string request)
         {
@@ -64,10 +83,14 @@ namespace SciChatApi
             return reader.ReadToEnd();
         }
 
+        private void PostData(string url, Dictionary<string, string> parameters, bool addCredentials = true)
+        {
+            parameters = AddCredentials(parameters, addCredentials);
+            PostData(url, parameters);
+        }
+
         private static void PostData(string url, Dictionary<string, string> parameters)
         {
-            //var content = new FormUrlEncodedContent(parameters);
-            //var json = JsonSerializer.Serialize(parameters);
             string queryString = string.Join("&", parameters.Select(x => $"{x.Key}={Uri.EscapeDataString(x.Value)}"));
 
             string fullUrl = $"{url}?{queryString}";
@@ -75,5 +98,15 @@ namespace SciChatApi
             var task = client.PostAsync(fullUrl, null);
             task.Wait();
         }
+
+        private Dictionary<string, string> AddCredentials(Dictionary<string, string> param, bool addCredentials)
+        {
+			if (addCredentials)
+			{
+				param.Add("u", $"{id}");
+				param.Add("p", Password);
+			}
+            return param;
+		}
     }
 }
