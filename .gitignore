@@ -31,4 +31,14 @@ msbuild.err
 msbuild.wrn
 
 # Visual Studio 2015
+*.v2
+*.cache
+*.editorconfig
 .vs/
+*.suo
+SciChatProject/obj/Debug/net6.0/SciChatProject.AssemblyInfo.cs
+SciChatProject/obj/Debug/net6.0/SciChatProject.AssemblyInfo.cs
+*.cache
+*.editorconfig
+SciChatProject/obj/SciChatProject.csproj.nuget.dgspec.json
+SciChatProject/obj/project.assets.json
