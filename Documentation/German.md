@@ -117,33 +117,90 @@ den Server schickt, der dann prüft, ob die korrekten Anmeldeinformationen für 
 
 ### Bot.cs
 **List<Message> GetSentMessage()**
+
 In dieser Methode werden alle Nachrichten abgerufen, die der Bot jemals gesendet hat.
 
 **List<Message> GetSentReceivedMessages(bool update = false)**
+
 Diese Methode gibt alle Nachrichten zurück, der der User jemals erhalten hat.
 Wird update dabei auf `true` gesetzt, so werden die Nachricht für der Rückgabe nocheinmal per
 Server Request aktualisiert.
 
 **List<Conversation>? GetConversations()**
+
 Gibt eine Liste mit allen Conversations zurück. TODO: Ist er in keiner Conversation soll eine leere Liste
 statt null zurückgegeben werden.
 
 **void SendMessage(string content, int convID)**
+
 Diese Methode lässt den Bot eine Nachricht senden.
 
-**List<Message> UppdateReceivedMessages()**
+**List<Message> UpdateReceivedMessages()**
+
 Dies Methode gibt alle Nachrichten zurück, die der Bot seit der letzten Aktualisierung erhalten hat.
 
+**string FetchViaParam(string suburl, Dictionary<string, string> parameters, bool addCredentials = true)**
+
+Diese Methode ruft `static string FetchViaParam(string suburl, Dictionary<string, string> parameters)` auf, ist selbst aber nicht statisch und bietet über `addCredentials=true` die Möglichkeit, die Anmeldedaten für die API (also die Nutzerid sowie das Passwort des Nutzers) zu den Parametern hinzuzufügen. Das ist notwendig, um einen Fetch auf den Server durchzuführen.
+
+**static string FetchViaParam(string suburl, Dictionary<string, string> parameters)**
+Diese Method ruft `static string FetchData(string request)`, und erstellt dazu aus dem Parameter-Dictionary sowie der suburl (also dem Namen des Request; z.B. 'userReceivedMessagesByID') einen entsprechenden Request.
+
 **static string FetchData(string request)**
-Diese Methode wird im allgemeinen verwendet, um Get-Requests an den Server zu schicken.
+Diese Methode wird im allgemeinen verwendet, um Get-Requests an den Server zu schicken und gibt die entsprechenden Werte zurück.
+TODO null-Rückgabe bei Fehler!
+
+**void PostData(string url, Dictionary<string, string> parameters, bool addCredentials = true)**
+Diese Method ruft `static void PostData(string url, Dictionary<string, string> parameters)`, und erstellt dazu aus dem Parameter-Dictionary sowie der suburl (also dem Namen des Request; z.B. 'addmessage') einen entsprechenden Request.
 
 **static void PostData(string url, Dictionary<string, string> parameters)**
 Diese Methode wird im allgemeinen verwendet, um Post-Requests an den Server zu schicken.
 Dabei wird zunächst ein entsprechender Query über die angegebenen Paramter erstellt.
+
+**Dictionary<string, string> AddCredentials(Dictionary<string, string> param, bool addCredentials)**
+Diese Methode fügt die id, sowie das Passwort des Bots zu einem Parameter-Dictionary hinzu.
 
 ## Der Server
 Der `Server` ist das dritte und als letztes erstellte Unterprojekt von `SciChat`.
 Wie bereits beschrieben wird es primär verwendet, um Requests des Bots abzufragen. Der Server ist in Bezug auf Passwort Implementation noch nicht fertig entwickelt.
 
 ### Controllers.ServerController.cs
-Das ist die einzige modifizierte Datei, die nicht zu 100% von Visual Studio erstellt wurde. Der Rest sind Projektdateien. 
+Das ist die einzige modifizierte Datei, die nicht zu 100% von Visual Studio erstellt wurde. Der Rest sind Projektdateien. Wie auch im Code dokumentiert, erwartet jede Methode das Feld `u` (ID des Users) sowie `p` (Passwort des User). Alle Methoden haben das Attribut `HttpHet(string name)` bzw. `HttpPost(string name)`. Dabei ist `name` der 'Command', der letzendlich beim Aufruf der API verwendet wird. Alle Methoden geben ein `IActionResult` zurück. Das ist dann vereinfacht ausgedrückt der Status, der aus der Abfrage resultiert (z.B. `200, Ok` oder `403, Frobidden` usw.). In jeder Methode wird zunächst geprüft, ob
+der Nutzer, der versucht einen Request zu erstellen dazu berechtigt ist. Wenn nicht wird `Unauthorized` zurückgegeben.
+
+**IActionResult GetConversation(int id, int u, string p)**
+
+Gibt die Konversation der ID `id` zurück. Allerdings nur, wenn der Nutzer, der die Abfrage ausführt auch Teil dieser Konversation ist.
+TODO: SICHERHEIT
+
+**IActionResult GetConversationsByUserID(int userid, int u, string p)**
+
+Gibt alle Konversationen zurück, in denen sich der User der id 'userid' befindet. Allerdings nur, wenn
+der User, der den Request ausführt auch der User ist, dessen Konversationen ausgegeben werden sollen.
+TODO: SICHERHEIT
+
+**IActionResult GetConversationMembers(int id, int u, string p)**
+
+Gibt alle Mitglieder einer Konversation der ID `id` zurück, wenn sich der Nutzer, der das Request erstellt in dieser Konversation befindet.
+TODO: SICHERHEIT
+
+**IActionResult GetConversationMessages(int id, int u, string p)**
+
+Gibt alle Nachrichten einer Konversation der ID `id` zurück, wenn sich der Nutzer, der das Request erstellt in dieser Konversation befindet.
+TODO: SICHERHEIT
+
+**IActionResult GetUserReceivedMessages(int userid, int u, string p, bool includeOwn=false)**
+
+Gibt alle Nachrrichten zurück, die der Nutzer der ID `userid` jemals erhalten hat. Ist `includeOwn` auf `true` gesetzt, werden dabei auch Nachrichten berücksichtigt, die der Nutzer selbst geschickt hat. Allerdings nur, wenn der Nutzer, der den Request erstellt hat auch der Nutzer ist, der den Request erstellt hat.
+TODO: Sicherheit
+
+**IActionResult GetUserSentMessages(int userid, int u, string p)**
+Gibt alle Nachrrichten zurück, die der Nutzer der ID `userid` jemals gesendet hat. Allerdings nur, wenn der Nutzer, der den Request erstellt hat auch der Nutzer ist, der den Request erstellt hat.
+TODO: Sicherheit
+
+**IActionResult AddMessage(int userid, int conversationid, string content, int u, string p)**
+Lässt den Nutzer der ID `userid` eine Nachricht des Inhalts `content` in die Konversation der ID `conversationid` schicken, wenn der Nutzer
+- dem Nutzer entsprecht, der den Request ersetllt hat UND
+- der Nutzer Teil der Konversation ist
+
+
