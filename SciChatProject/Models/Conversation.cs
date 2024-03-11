@@ -33,5 +33,10 @@
         {
             return DataBaseHelper.GetObjects<Conversation>().First(x=>x.id==id);
         }
+
+        public static Conversation GetLastConversation()
+        {
+            return DataBaseHelper.GetObjects<Conversation>().Last();
+        }
     }
 }

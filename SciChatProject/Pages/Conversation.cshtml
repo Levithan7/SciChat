@@ -3,6 +3,7 @@
 @{
 	string convid = Request.Query["conversationid"];
 	string buff = ":";
+	int lastuser = 0;
 }
 
 <script src="_framework/blazor.server.js"></script>
@@ -18,22 +19,72 @@
 
 <p>
 	<form id="messagebuttons" method="post">
-	<input type="submit" name="sendmessage" value="Send" />
-	<input type="text" name="contentmessage" placeholder="Message" />
-	<input type="button" name="backbutton" value="Back" onclick="back()" /> <br />
-	<input type="text" name="adduser" placeholder="Username" />
-	<input type="submit" name="addbutton" value="Add" /> <br />
+        <input type="button" name="backbutton" value="Back" onclick="back()" style="background-color: dodgerblue"/>
+	    <input type="text" name="contentmessage" placeholder="Message" />
+        <input type="submit" name="sendmessage" value="Send" style="background-color: white" />
+        <div class="style-conv">
+            <input type="text" name="adduser" placeholder="Username" />
+            <input type="submit" name="addbutton" value="Add" style="background-color: lightsteelblue" />
+            <input type="checkbox" name="leaveCheck" />
+            <input type="submit" name="LeaveChat" value="Leave Chat" style="background-color: darkred" />         
+        </div>       
+        <br />
 	</form>
 	<form id="message">
-	@foreach (var message in Models.Conversation.GetConversationByID(Int32.Parse(convid)).GetMessages())
-	{
-		<br /> @message.GetUser().Username
-		@buff
-		<br /> @message.Content
-	}
+		<div class="card-columns">
+			@{
+				foreach (var message in Models.Conversation.GetConversationByID(Int32.Parse(convid)).GetMessages())
+				{
+
+					if(lastuser == message.GetUser().id)
+					{
+						if (message.GetUser().id == HttpContext.Session.GetInt32("idlogin"))
+						{
+							<br />
+							<div class="style-yourmessage">
+								@message.Content
+							</div>
+						}
+						else
+						{
+							<br />
+							<div class="style-othermessage">
+								@message.Content
+							</div>
+						}
+					}
+					else
+					{
+						if (message.GetUser().id == HttpContext.Session.GetInt32("idlogin"))
+						{
+							<br />
+							<div class="style-messager">
+								@message.GetUser().Username
+								@buff
+							</div>
+							<br />
+							<div class="style-yourmessage">
+								@message.Content
+							</div>
+						}
+						else
+						{
+							<br />
+							<div class="style-messager">
+								@message.GetUser().Username
+								@buff
+							</div>
+							<br />
+							<div class="style-othermessage">
+								@message.Content
+							</div>
+						}
+					}
+					lastuser = message.GetUser().id;
+				}
+			}
+		</div>
 	</form>
-	
-	
 </p>
 
 

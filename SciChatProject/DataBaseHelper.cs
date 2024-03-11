@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using static SciChatProject.DataBaseHelper;
 
 namespace SciChatProject
 {
@@ -95,6 +96,18 @@ namespace SciChatProject
             }
 
             throw new Exception("For some reason No Query String was Created!");
+        }
+
+        public static void DeleteRowFormDB<T>(string dataBaseName, int userid, int convid)
+        {
+            var query = $"DELETE FROM {dataBaseName} WHERE conversationid = {convid} and userid = {userid}";
+            var conn = CreateConnection();
+
+            conn.Open();
+            var cmd = new SqlCommand(query, conn);
+            cmd.ExecuteNonQuery();
+
+            conn.Close();
         }
 
         private static List<PropertyInfo> GetListOfChangableProperties(object obj)

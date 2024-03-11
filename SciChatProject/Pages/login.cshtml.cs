@@ -5,9 +5,14 @@ namespace SciChatProject.Pages
 {
     public class loginModel : PageModel
     {
-        public void OnGet()
+        public IActionResult OnGet()
         {
-            
+            if(HttpContext.Session.GetInt32("idlogin") > 0)
+            {
+                string url = "/Index";
+                return Redirect(url);
+            }
+            return Page();
         }
 
         public IActionResult OnPost()

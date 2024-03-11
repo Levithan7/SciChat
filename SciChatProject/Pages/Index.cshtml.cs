@@ -43,8 +43,14 @@ namespace SciChatProject.Pages
             {
                 int id1 = Models.User.GetIDByName(u);
                 int id2 = (int)HttpContext.Session.GetInt32("idlogin");
-                Models.Conversation.AddUserToNewConversation(Models.User.GetUserByID(id1),Models.User.GetUserByID(id2), c);
-
+                if(Models.Conversation.GetLastConversation().id == 54)
+                {
+                    HttpContext.Session.SetInt32("erroradd", 1);
+                }
+                else
+                {
+                    Models.Conversation.AddUserToNewConversation(Models.User.GetUserByID(id1), Models.User.GetUserByID(id2), c);
+                }
             }
             else
             {

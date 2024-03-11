@@ -16,3 +16,172 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.holtwood-one sc-regular {
+    font-family: "Holtwood One SC", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.color-box{
+    background-color: darkturquoise;
+    width: 10000px;
+    height: 20px;
+}
+
+.style-conv {
+    display: inline;
+    margin: 320px;
+}
+
+.style-card {
+    max-width: 40%;
+    min-width: 10%;
+    block-size: auto;
+}
+
+
+.style-yourmessage {
+    border-radius: 5px;
+    display: inline;
+    background-color: darkturquoise;
+    max-width: 1000px;
+    min-width: 10px;
+    width: min-content;
+    max-height: 1000px;
+    min-height: 25px;
+    height: min-content;
+    border-style: ridge;
+    border-color: darkcyan;
+    margin-left: 20px;
+}
+
+.style-othermessage {
+    border-radius: 5px;
+    display: inline;
+    background-color: aliceblue;
+    max-width: 1000px;
+    min-width: 10px;
+    width: min-content;
+    max-height: 1000px;
+    min-height: 30px;
+    height: min-content;
+    border-style: ridge;
+    border-color: white;
+    margin-left: 20px;
+}
+
+.style-messager {
+    display: inline;
+    font-family:Holtwood One SC, serif;
+}
+
+.style-chatbuttons {
+    cursor: pointer;
+    width: 400px;
+    height: 70px;
+}
+
+.style-grid {
+    cursor: default;
+    display: inline-grid;
+    grid-column-start: 1;
+    grid-column-end: 18;
+    grid-row-start: 1;
+    grid-row-end: 18;
+    grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
+}
+
+.style-griditemmetals {
+    border: 1px solid;
+    border-block-color: black;
+    padding: 7px;
+    height: 50px;
+    width: 50px;
+    font-size: 20px;
+    text-align: center;
+    background-color: gray;
+}
+.style-griditemmetalloids {
+    border: 1px solid;
+    border-block-color: black;
+    padding: 7px;
+    height: 50px;
+    width: 50px;
+    font-size: 20px;
+    text-align: center;
+    background-color: tan;
+}
+.style-griditemnonemetals {
+    border: 1px solid;
+    border-block-color: black;
+    padding: 7px;
+    height: 50px;
+    width: 50px;
+    font-size: 20px;
+    text-align: center;
+    background-color: lightgreen;
+}
+.style-griditemhalogens {
+    border: 1px solid;
+    border-block-color: black;
+    padding: 7px;
+    height: 50px;
+    width: 50px;
+    font-size: 20px;
+    text-align: center;
+    background-color: yellow;
+}
+
+.style-griditemnoblegases {
+    border: 1px solid;
+    border-block-color: black;
+    padding: 7px;
+    height: 50px;
+    width: 50px;
+    font-size: 20px;
+    text-align: center;
+    background-color: darkslateblue;
+}
+
+.style-griditemalkalineearthmetals {
+    border: 1px solid;
+    border-block-color: black;
+    padding: 7px;
+    height: 50px;
+    width: 50px;
+    font-size: 20px;
+    text-align: center;
+    background-color: hotpink;
+}
+
+.style-griditemalkalimetals {
+    border: 1px solid;
+    border-block-color: black;
+    padding: 7px;
+    height: 50px;
+    width: 50px;
+    font-size: 20px;
+    text-align: center;
+    background-color: indianred;
+}
+
+.style-griditem {
+    border: 1px solid;
+    border-block-color: black;
+    padding: 7px;
+    height: 50px;
+    width: 50px;
+    font-size: 20px;
+    text-align: center;
+    background-color: darkturquoise;
+}
+
+.style-griditemempty {
+    border: 0px solid;
+    border-block-color: white;
+    height: 50px;
+    width: 50px;
+}
+
+
