@@ -1,8 +1,13 @@
 # Dokumentation von SciChat
 
-## Das Chatprogramm
-### Nutzung von SciChat als regulärer Nutzer
-### Die Dateien
+## Nutzung von SciChat als regulärer Nutzer
+
+## Nutzung von SciChat als Bot-Developer
+In SciChat ist es möglich einen Nutzer zu erstellen, den mal per C#-Programmcode automatisieren kann. Ein solcher automatisierter Nutzer wird ab jetzt als `Bot` bezeichnet. Um  einen Bot zu erstellen ist [https://github.com/Levithan7/SciChat/tree/main/SciChatApi](Die BotAPI) zu klonen. Dann lässt sich in der `Program.cs` eine Instanz der `Bot`-Klasse erstellen und darüber Handeln. Ein Beispiel dafür ist [https://github.com/Levithan7/SciChat/tree/main/SciChatApi](hier) beflindlich. Die restlichen Dateien sind nicht zu modifizieren.
+
+## Der Quellcode
+
+### SciChatProjekt
 Das Speichern der Daten funktioniert über MySQL. Während der Entwicklung wird aktuell jeweils ein Datenbankserver auf der lokalen Maschine des jeweiligen Entwicklers verwenden.
 Im späteren Verlauf soll die Datenbank auf einem Server gehosted werden. 
 #### DataBaseHelper.cs
@@ -109,13 +114,24 @@ Diese Methode wandelt das aktuelle Klammern "Level" entsprechend ConvertExponent
 #### Weitere Dateien
 Es gibt noch einige weitere Dateien im Projekt, die jedoch von Visual Studio automatisch instantiiert und dann nicht weiter von uns verändert wurden, sodass diese keinen Platz in dieser Dokumentation finden.
 
-## Die Bot-Api
+### Die Bot-Api
 Die Bot-Api kann verwendet werden, um Computergesteuerte User zu entwickeln bspw. zur Ausführung erstellter Commands. Die API ist nicht sehr ausgearbeitet, da sie nur einen nebensächlichen Teil des Projektes darstellt. Trotzdem sollte sie ausreichen, um grundlegende Funktionalität eines Bots (vergleichbar mit älteren Discord Bots) zu implementieren.
 Die Bot-Api ist dabei per Github zu klonen. In einer Datei `Program.cs` kann der entsprechende Bot-Developer dann seinen Bot programmieren.
 In der vorgefertigten `Bot.cs` liegt die Vorlage für einen Bot. Dabei ist zu beachten, dass der Bot niemals direkt auf die Datenbank zugreift sondern stattdessen einen Request an
-den Server schickt, der dann prüft, ob die korrekten Anmeldeinformationen für den Bot vorliegen.
+den Server schickt, der dann prüft, ob die korrekten Anmeldeinformationen für den Bot vorliegen. So kann die Sicherheit der Daten garantiert werden.
 
-### Bot.cs
+#### Models
+Hierbei handelt es sich letzlich um eine Kopie der Models des `SciChatProjects`, die jedoch nicht über die entsprechenden Methoden verfügen sondern nur um die Attribute. Das wird dafür benötigt, dass die Rückgegebenen Daten des Servers in Objekte gewandelt werden können.
+
+#### Constants.cs
+In dieser Datei ist - stand jetzt - eine einzige Konstante definiert. Dabei handelt es sich um die url der API. Weitere Konstanten können hier hinzugefügt werden.
+
+#### Program.cs
+Das ist ein Beispiel für die Umsetzung eines Bots. Dieser Bot hat die `id=1` und das `Password="123"`.
+Zum start des Bots werden erstmal alle Nachrichten abgerufen. Anschließend werden in alle Konversationen, in denen der Bot ist, die Nachricht 'Bot started!' gesendet. Danach begibt sich der Bot in eine unendlich lange Schleife, in der zunächst die neuen Nachrichten geladen werden und dann per `Regex` geprüft wird, ob der Command `/forloop <anzahl>` aufgerufen wird. Über diesen Command wird in die Konversation, in der der Command aufgerufen wurde eine Nachricht mit allen Zahlen von `0` bis `anzahl-1` gesendet.
+Anschließend schläft der Bot für eine Sekunde, damit die API nicht überlastet wird.
+
+#### Bot.cs
 **List<Message> GetSentMessage()**
 
 In dieser Methode werden alle Nachrichten abgerufen, die der Bot jemals gesendet hat.
@@ -160,11 +176,12 @@ Dabei wird zunächst ein entsprechender Query über die angegebenen Paramter ers
 **Dictionary<string, string> AddCredentials(Dictionary<string, string> param, bool addCredentials)**
 Diese Methode fügt die id, sowie das Passwort des Bots zu einem Parameter-Dictionary hinzu.
 
-## Der Server
+### Der Server
 Der `Server` ist das dritte und als letztes erstellte Unterprojekt von `SciChat`.
 Wie bereits beschrieben wird es primär verwendet, um Requests des Bots abzufragen. Der Server ist in Bezug auf Passwort Implementation noch nicht fertig entwickelt.
+Wichtig ist dieses Projekt nicht mit dem letzendlichen Server zu verwechseln auf dem das Projekt gehostet wird. Dieser wird als `Host` bezeichnet.  
 
-### Controllers.ServerController.cs
+#### Controllers.ServerController.cs
 Das ist die einzige modifizierte Datei, die nicht zu 100% von Visual Studio erstellt wurde. Der Rest sind Projektdateien. Wie auch im Code dokumentiert, erwartet jede Methode das Feld `u` (ID des Users) sowie `p` (Passwort des User). Alle Methoden haben das Attribut `HttpHet(string name)` bzw. `HttpPost(string name)`. Dabei ist `name` der 'Command', der letzendlich beim Aufruf der API verwendet wird. Alle Methoden geben ein `IActionResult` zurück. Das ist dann vereinfacht ausgedrückt der Status, der aus der Abfrage resultiert (z.B. `200, Ok` oder `403, Frobidden` usw.). In jeder Methode wird zunächst geprüft, ob
 der Nutzer, der versucht einen Request zu erstellen dazu berechtigt ist. Wenn nicht wird `Unauthorized` zurückgegeben.
 
@@ -202,5 +219,3 @@ TODO: Sicherheit
 Lässt den Nutzer der ID `userid` eine Nachricht des Inhalts `content` in die Konversation der ID `conversationid` schicken, wenn der Nutzer
 - dem Nutzer entsprecht, der den Request ersetllt hat UND
 - der Nutzer Teil der Konversation ist
-
-
