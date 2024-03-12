@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SciChatProject.Models;
-using ScottPlot.Panels;
 
 namespace SciChatProject.Pages
 {

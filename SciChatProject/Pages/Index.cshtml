@@ -10,7 +10,7 @@
     @foreach (var conv in Models.User.GetUserByID(i).GetConversations())
     {
         <br />
-        <a href="@Constants.HOSTURL/conversation?conversationid=@conv.id" , target="_blank" class="btn btn-dark">@conv.ConversationName</a>
+        <a href="/conversation?conversationid=@conv.id" name="chatbutton" target="_blank" class="btn btn-dark">@conv.ConversationName</a>
         <br />
     }
 </p>

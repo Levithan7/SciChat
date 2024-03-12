@@ -8,7 +8,7 @@
 
         public List<Message> GetMessages()
         {
-            return DataBaseHelper.GetObjects<Message>().Where(x => x.ConversationID==id).OrderByDescending(x => x.id).ToList();
+            return DataBaseHelper.GetObjects<Message>().Where(x => x.ConversationID==id).OrderBy(x => x.id).ToList();
         }
 
         public List<User> GetUsers()

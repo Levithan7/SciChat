@@ -6,21 +6,59 @@
 
 }
 
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<meta http-equiv="refresh" content="1">
+<head>
+	<style>
+		.scrollable-divider {
+			width: 100%;
+			height: 75vh;
+			overflow-y: scroll;
+			border: 1px solid #ccc;
+		}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		function back() {
+			window.location.href = "/index";
+		}
 
-<p>
-	<body>
-		<!--Example on how data could be displayed-->
-		<form id="message" method="post">
-			<input type="submit" name="sendmessage" value="click" />
-			<input type="text" name="contentmessage" placeholder="Message" /><br/>
-			@foreach (var message in Models.Conversation.GetConversationByID(Int32.Parse(convid)).GetMessages())
-			{
-				<br /> @message.GetUser().UserName
-				@buff
-				<br /> @message.Content
-			}
-	</form>
-	</body>
-</p>
+		function refreshPage() {
+			$.get(document.URL, function (data) {
+				var contentDiv = $('#content');
+				var currentScrollHeight = contentDiv[0].scrollHeight;
+				var scrollTop = contentDiv.scrollTop();
+				contentDiv.html($(data).find('#content').html());
+				var newScrollHeight = contentDiv[0].scrollHeight;
+				var scrollDifference = newScrollHeight - currentScrollHeight;
+				contentDiv.scrollTop(scrollTop + scrollDifference);
+			});
+		}
+		setInterval(refreshPage, 1000);
+	</script>
+</head>
+
+
+<body>
+	<div class="scrollable-divider" id="content">
+		@foreach (var message in Models.Conversation.GetConversationByID(Int32.Parse(convid)).GetMessages())
+		{
+			<br /><bold> @message.GetUser().Username</bold>@buff
+			<br /> @message.Content
+		}
+	</div>
+
+	<script>
+		// JavaScript to scroll the div to the bottom on the first load
+		var scrollableDiv = document.getElementById('content');
+		scrollableDiv.scrollTop = scrollableDiv.scrollHeight;
+	</script>
+
+	<div id="formid">
+		<form id="messagebuttons" method="post">
+			<input type="submit" name="sendmessage" value="Send" />
+			<input type="text" name="contentmessage" placeholder="Message" />
+			<input type="button" name="backbutton" value="Back" onclick="back()" /> <br />
+			<input type="text" name="adduser" placeholder="Username" />
+			<input type="submit" name="addbutton" value="Add" /> <br />
+		</form>	
+	</div>
+</body>
