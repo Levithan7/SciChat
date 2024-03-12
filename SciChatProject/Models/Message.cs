@@ -16,6 +16,8 @@ namespace SciChatProject.Models
 
         public int id { get; set; }
 
+        public DateTime eventtime { get; set; }
+
         [SQLProperty(Name="content")] public string Content { get; set; }
         [SQLProperty(Name="userid")] public int UserID { get; set; }
         [SQLProperty(Name="conversationid")] public int ConversationID { get; set; }

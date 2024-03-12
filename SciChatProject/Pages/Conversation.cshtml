@@ -32,11 +32,23 @@
 	</form>
 	<form id="message">
 		<div class="card-columns">
-			@{
-				foreach (var message in Models.Conversation.GetConversationByID(Int32.Parse(convid)).GetMessages())
-				{
-
-					if(lastuser == message.GetUser().id)
+            @{
+                foreach (var message in Models.Conversation.GetConversationByID(Int32.Parse(convid)).GetMessages())
+                {
+                    string time = "time";
+                    switch ((message.eventtime - DateTime.Now).Hours)
+                    {
+                        case int n when (n >= 1 && n <= 60):
+                            time = (DateTime.Now -message.eventtime).Hours.ToString() + " hours ago";
+                            break;
+                        case int n when (n > 60):
+                            time = message.eventtime.ToString();
+                            break;
+                        case int n when (n < 1):
+                            time = (DateTime.Now - message.eventtime).Minutes.ToString() + " minutes ago";
+                            break;
+                    }     
+                    if(lastuser == message.GetUser().id)
 					{
 						if (message.GetUser().id == HttpContext.Session.GetInt32("idlogin"))
 						{
@@ -44,13 +56,15 @@
 							<div class="style-yourmessage">
 								@message.Content
 							</div>
-						}
+                            <div style="display: inline">@time</div>
+                        }
 						else
 						{
 							<br />
 							<div class="style-othermessage">
 								@message.Content
 							</div>
+                            <div style="display: inline">@time</div>
 						}
 					}
 					else
@@ -65,7 +79,8 @@
 							<br />
 							<div class="style-yourmessage">
 								@message.Content
-							</div>
+                            </div>
+                            <div style="display: inline">@time</div>
 						}
 						else
 						{
@@ -78,7 +93,8 @@
 							<div class="style-othermessage">
 								@message.Content
 							</div>
-						}
+                            <div style="display: inline">@time</div>
+                        }
 					}
 					lastuser = message.GetUser().id;
 				}
