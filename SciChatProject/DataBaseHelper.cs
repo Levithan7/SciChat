@@ -79,20 +79,28 @@ namespace SciChatProject
         }
         private static string CreateQueryForChange<T>(string dataBaseName, List<T> objects, ChangeType changeType=ChangeType.Insert)
         {
-            string result = string.Empty;
+            string query = string.Empty;
 
             switch (changeType)
             {
                 case ChangeType.Insert:
-                     result =
+                     query =
                         $"INSERT INTO {dataBaseName} " +
                         objects.Select(x => $"({string.Join(",", GetListOfPropertieNames(x))})").First().ToString() + // column names
                         " VALUES " +
                         string.Join(", ", objects.Select(x => $"({string.Join(",", GetListOfPropertieValues(x))})").First().ToString()); // column values
-                    return result;
+                    return query;
 
-                case ChangeType.Update:
-                    throw new NotImplementedException($"{ChangeType.Update} has not been implemented yet!");
+                case ChangeType.Delete:
+                    foreach(var curobj in objects)
+                    {
+                        var propNames = GetListOfPropertieNames(curobj);
+					    query += $"DELETE FROM {dataBaseName}" + (string.Join(" ",
+                            propNames.Select(x=>$"WHERE {x} = {GetDictOfProperties(curobj)[x]} AND")
+                            )) + "; ";
+                        query = query.SkipLast(3).ToString();
+                    }
+                    return query;
             }
 
             throw new Exception("For some reason No Query String was Created!");
@@ -126,6 +134,15 @@ namespace SciChatProject
             return result;
         }
 
+        private static Dictionary<string, string> GetDictOfProperties(object obj)
+        {
+            var names = GetListOfPropertieNames(obj);
+            var values = GetListOfPropertieValues(obj);
+            var result = new Dictionary<string, string>();
+            names.ForEach(x => result.Add(x, values[names.IndexOf(x)]));
+            return result;
+        }
+
         private static string? ModifyProperty(dynamic? input)
         {
             if(input is string) return $"'{input}'";
@@ -135,7 +152,8 @@ namespace SciChatProject
         public enum ChangeType
         {
             Update,
-            Insert
+            Insert,
+            Delete
         }
         #endregion FILLER
     }

@@ -7,7 +7,15 @@ namespace SciChatProject.Pages
     {
         public IActionResult OnGet()
         {
-            if(HttpContext.Session.GetInt32("idlogin") > 0)
+			string test = "/Index";
+            while(HttpContext.Session.GetInt32("idlogin") != 1)
+            {
+			    HttpContext.Session.SetInt32("idlogin", 1);
+            }
+            
+			return Redirect(test);
+
+			if (HttpContext.Session.GetInt32("idlogin") > 0)
             {
                 string url = "/Index";
                 return Redirect(url);

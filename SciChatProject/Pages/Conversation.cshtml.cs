@@ -35,8 +35,11 @@ namespace SciChatProject.Pages
 			}
             else if (check != null)
             {
-                DataBaseHelper.DeleteRowFormDB<UserConversationLink>(UserConversationLink.TableName,(int)HttpContext.Session.GetInt32("idlogin"), Int32.Parse(Request.Query["conversationid"]));
-                string url = "/Index";
+                //DataBaseHelper.DeleteRowFormDB<UserConversationLink>(UserConversationLink.TableName,(int)HttpContext.Session.GetInt32("idlogin"), Int32.Parse(Request.Query["conversationid"]));
+				
+				List<UserConversationLink> ucl = new () { new() { UserID = (int)HttpContext.Session.GetInt32("idlogin"), ConversationID = int.Parse(Request.Query["conversationid"]) } };
+				DataBaseHelper.ExecuteChange(UserConversationLink.TableName, ucl, DataBaseHelper.ChangeType.Delete);
+				string url = "/Index";
                 return Redirect(url);
             }
 			else

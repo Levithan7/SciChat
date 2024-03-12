@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "3WxvTWAqQmPNsGjA5d9Kw9HTSbJowTL/ImnyvnonGUF7cKXYyAguWhpi9qzJn9SXJf/XjwzwLmMoR74L041RMw==",
+  "dgSpecHash": "cW+Hc1rwWcRMZE5y8GMneiWVcSJPVuI5RnbUaW6uy272YBfi/nmChup/EhVtebUtsIj0RHkzxWbADG9hQ5y1Qw==",
   "success": true,
   "projectFilePath": "D:\\Developing\\GitHub\\SciChat\\SciChatProject\\SciChatProject.csproj",
   "expectedPackageFiles": [
@@ -10,7 +10,7 @@
     "C:\\Users\\levij\\.nuget\\packages\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "C:\\Users\\levij\\.nuget\\packages\\runtime.win-x64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "C:\\Users\\levij\\.nuget\\packages\\runtime.win-x86.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x86.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
-    "C:\\Users\\levij\\.nuget\\packages\\scottplot\\5.0.17\\scottplot.5.0.17.nupkg.sha512",
+    "C:\\Users\\levij\\.nuget\\packages\\scottplot\\5.0.21\\scottplot.5.0.21.nupkg.sha512",
     "C:\\Users\\levij\\.nuget\\packages\\skiasharp\\2.88.7\\skiasharp.2.88.7.nupkg.sha512",
     "C:\\Users\\levij\\.nuget\\packages\\skiasharp.nativeassets.macos\\2.88.7\\skiasharp.nativeassets.macos.2.88.7.nupkg.sha512",
     "C:\\Users\\levij\\.nuget\\packages\\skiasharp.nativeassets.win32\\2.88.7\\skiasharp.nativeassets.win32.2.88.7.nupkg.sha512",

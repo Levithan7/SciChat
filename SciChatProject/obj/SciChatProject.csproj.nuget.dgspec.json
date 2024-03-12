@@ -47,7 +47,7 @@
           "dependencies": {
             "ScottPlot": {
               "target": "Package",
-              "version": "[5.0.17, )"
+              "version": "[5.0.21, )"
             },
             "System.Data.SqlClient": {
               "target": "Package",
