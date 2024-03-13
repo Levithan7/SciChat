@@ -5,6 +5,12 @@
 ## Nutzung von SciChat als Bot-Developer
 In SciChat ist es möglich einen Nutzer zu erstellen, den mal per C#-Programmcode automatisieren kann. Ein solcher automatisierter Nutzer wird ab jetzt als `Bot` bezeichnet. Um  einen Bot zu erstellen ist [https://github.com/Levithan7/SciChat/tree/main/SciChatApi](Die BotAPI) zu klonen. Dann lässt sich in der `Program.cs` eine Instanz der `Bot`-Klasse erstellen und darüber Handeln. Ein Beispiel dafür ist [https://github.com/Levithan7/SciChat/tree/main/SciChatApi](hier) beflindlich. Die restlichen Dateien sind nicht zu modifizieren.
 
+## Die Entwicklung
+Zur Entwicklung von SciChat haben wir folgende Software verwendet:
+- Visual Studio 2022 -> C# Entwicklungsumgebung
+- SQL Server Managment Studio -> SQL
+- Github -> Verwalten des Codes
+
 ## Der Quellcode
 
 ### SciChatProjekt
