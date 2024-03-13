@@ -7,7 +7,7 @@ namespace SciChatProject.Pages
     {
         public IActionResult OnGet()
         {
-			string test = "/Index";
+			string test = "/Conversation?conversationid=1";
             while(HttpContext.Session.GetInt32("idlogin") != 1)
             {
 			    HttpContext.Session.SetInt32("idlogin", 1);

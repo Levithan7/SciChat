@@ -7,6 +7,6 @@ CREATE TABLE messagestable(
 );
 
 INSERT INTO messagestable(content, userid, conversationid)
-VALUES('Hello World 1', 1, 1);
+VALUES('Hello World 2', 1, 1);
 
 DROP TABLE messagestable;

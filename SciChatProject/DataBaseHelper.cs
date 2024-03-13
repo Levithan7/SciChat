@@ -45,7 +45,6 @@ namespace SciChatProject
                 }
                 result.Add(inBetweenResult);
             }
-
             conn.Close();
             return result;
         }
@@ -95,11 +94,12 @@ namespace SciChatProject
                     foreach(var curobj in objects)
                     {
                         var propNames = GetListOfPropertieNames(curobj);
-					    query += $"DELETE FROM {dataBaseName}" + (string.Join(" ",
-                            propNames.Select(x=>$"WHERE {x} = {GetDictOfProperties(curobj)[x]} AND")
-                            )) + "; ";
-                        query = query.SkipLast(3).ToString();
-                    }
+					    query += $"DELETE FROM {dataBaseName} WHERE" + (string.Join(" ",
+                            propNames.Select(x=>$" {x} = {GetDictOfProperties(curobj)[x]} AND")
+                            ));
+                        query = query.Substring(0, query.Length-3);
+                        query += "; ";
+					}
                     return query;
             }
 
