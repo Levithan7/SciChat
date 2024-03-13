@@ -28,10 +28,11 @@
 <p>
 	<div class="scrollable-divider" id="content">
 		<div class="card-columns">
-            @{
-                foreach (var message in Models.Conversation.GetConversationByID(Int32.Parse(convid)).GetMessages())
-                {
-                    string time = "time";
+			@{
+				foreach (var message in Models.Conversation.GetConversationByID(Int32.Parse(convid)).GetMessages())
+				{
+					message.ParseAllCommands();
+					string time = "time";
 					switch ((message.eventtime - DateTime.Now).Hours)
                     {
                         case int n when (n >= 1 && n <= 60):
@@ -50,7 +51,7 @@
 						{
 							<br />
 							<div class="style-yourmessage">
-								@message.Content
+								@Html.Raw(message.Content)
 							</div>
                             <div style="display: inline">@time</div>
                         }

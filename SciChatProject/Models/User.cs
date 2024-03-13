@@ -19,7 +19,7 @@
 
         public static void PutUserInDataBase(string pass, string u)
         {
-            DataBaseHelper.ExecuteChange(TableName, new List<User> { new Models.User { Password = pass, Username = u } }, DataBaseHelper.ChangeType.Insert);
+            DataBaseHelper.ExecuteChange(TableName, new List<User> { new User { Password = pass, Username = u } }, DataBaseHelper.ChangeType.Insert);
         }
 
         public static User? GetUserByID(int id)

@@ -17,18 +17,12 @@ namespace SciChatProject.Pages
 
         public IActionResult OnPost()
         {
-            /*var foo = Request.Form["proceedingType"];
-            if(!bool.TryParse(Request.Form["proceedingType"], out bool isLogin))
-            {
-                HttpContext.Session.SetString("error", "Proceeing-Type not set correclty.");
-                return Page();
-            }*/
-            var isLogin = true;
-
-            int userID = Models.User.GetIDByName(Request.Form["name"]);
+            bool isLogin = Request.Form["type"].ToString() != "on";
+            string userName = Request.Form["name"];
+            int userID = Models.User.GetIDByName(userName);
             string password = Request.Form["password"];
 
-			if (isLogin && userID != 0)
+			if (isLogin)
             {
                 if(userID == 0)
                 {
@@ -54,11 +48,11 @@ namespace SciChatProject.Pages
             {
                 if (userID != 0)
                 {
-                    HttpContext.Session.SetString("error", "This user does not exist!");
+                    HttpContext.Session.SetString("error", "This user does exist already!");
                     return Page();
                 }
 
-                Models.User.PutUserInDataBase(password, Request.Form["signupname"]);
+                Models.User.PutUserInDataBase(password, userName);
                 HttpContext.Session.SetInt32("idlogin", Models.User.GetLastUser().id);
                 string url = "/Index";
                 return Redirect(url);
