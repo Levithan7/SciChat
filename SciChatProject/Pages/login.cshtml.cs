@@ -3,18 +3,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace SciChatProject.Pages
 {
-    public class loginModel : PageModel
+	public class loginModel : PageModel
     {
         public IActionResult OnGet()
         {
-			string test = "/Conversation?conversationid=1";
-            while(HttpContext.Session.GetInt32("idlogin") != 1)
-            {
-			    HttpContext.Session.SetInt32("idlogin", 1);
-            }
-            
-			return Redirect(test);
-
 			if (HttpContext.Session.GetInt32("idlogin") > 0)
             {
                 string url = "/Index";
@@ -25,21 +17,31 @@ namespace SciChatProject.Pages
 
         public IActionResult OnPost()
         {
-            int u = 0;
-            string pass = string.Empty;
-            int user = 0;
-            u = Models.User.GetIDByName(Request.Form["signupname"]);
-            pass = Request.Form["signuppassword"];
-            user = Models.User.GetIDByName(Request.Form["loginname"]);
-			if (user != 0)
+            /*var foo = Request.Form["proceedingType"];
+            if(!bool.TryParse(Request.Form["proceedingType"], out bool isLogin))
             {
-                bool passwordToF = Models.User.PasswordTrue(user, Request.Form["loginpassword"]);
+                HttpContext.Session.SetString("error", "Proceeing-Type not set correclty.");
+                return Page();
+            }*/
+            var isLogin = true;
+
+            int userID = Models.User.GetIDByName(Request.Form["name"]);
+            string password = Request.Form["password"];
+
+			if (isLogin && userID != 0)
+            {
+                if(userID == 0)
+                {
+                    HttpContext.Session.SetString("error", "This user does not exist!");
+                    return Page();
+                }
+
+                bool passwordToF = Models.User.PasswordTrue(userID, password);
                 if (passwordToF == true)
                 {
-                    HttpContext.Session.SetInt32("idlogin", user);
+                    HttpContext.Session.SetInt32("idlogin", userID);
 					string url = "/Index";
                     return Redirect(url);
-
                 }
                 else
                 {
@@ -47,9 +49,16 @@ namespace SciChatProject.Pages
                     return Page();
                 }
             }
-            else if (u != 0)
+
+            else if (!isLogin)
             {
-                Models.User.PutUserInDataBase(pass, Request.Form["signupname"]);
+                if (userID != 0)
+                {
+                    HttpContext.Session.SetString("error", "This user does not exist!");
+                    return Page();
+                }
+
+                Models.User.PutUserInDataBase(password, Request.Form["signupname"]);
                 HttpContext.Session.SetInt32("idlogin", Models.User.GetLastUser().id);
                 string url = "/Index";
                 return Redirect(url);
