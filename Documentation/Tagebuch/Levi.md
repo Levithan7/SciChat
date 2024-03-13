@@ -1,3 +1,5 @@
+Neben den nun genannten spezifisichen Aktionen sei gesagt, dass ich das Projekt im allgemeinen organisiert habe. Till und ich haben zusätzlich zur Unterrichtinternen und der unterichtexternen Arbeit ab und zu längere Absprachen (teilw. 45-60 Minuten) hinsichtlich des Projekts zu halten, in denen Zwischenstände besprochen wurden. Unter Organisation fällt dabei vor allem das zusammenfügen der einzelnen Code-Stränge. Auch wenn GitHub dabei tatkräfitg unterstützt, müssen viele Änderungen dann doch manuell durchgeführt werden, was wiederrum durch eine dafür eingebaute Funktionalität von Visual Studio deutlich vereinfacht wurde.
+
 09. Januar:
     - Aufsetzen des Projektes
     - Erstellen von .gitignore
@@ -61,3 +63,7 @@
     - Verbesserung der BotApi, sodass diese nun sicher verwendet werden kann
 11. März:
   - Dokumentation (v.a. BotApi & Nutzeroberfläche SciChat) und Tagebuch so gut wie fertig stellen
+12. März:
+  - Anfangen meine Änderungen hinsichtlich des autoupdates auf Tills Änderungen zu übetragen
+13. März:
+  - Übertragen der Änderungen fertiggestellt
