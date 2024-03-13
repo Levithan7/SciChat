@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using static SciChatProject.DataBaseHelper;
 
 namespace SciChatProject
 {
@@ -44,7 +45,6 @@ namespace SciChatProject
                 }
                 result.Add(inBetweenResult);
             }
-
             conn.Close();
             return result;
         }
@@ -78,23 +78,44 @@ namespace SciChatProject
         }
         private static string CreateQueryForChange<T>(string dataBaseName, List<T> objects, ChangeType changeType=ChangeType.Insert)
         {
-            string result = string.Empty;
+            string query = string.Empty;
 
             switch (changeType)
             {
                 case ChangeType.Insert:
-                     result =
+                     query =
                         $"INSERT INTO {dataBaseName} " +
                         objects.Select(x => $"({string.Join(",", GetListOfPropertieNames(x))})").First().ToString() + // column names
                         " VALUES " +
                         string.Join(", ", objects.Select(x => $"({string.Join(",", GetListOfPropertieValues(x))})").First().ToString()); // column values
-                    return result;
+                    return query;
 
-                case ChangeType.Update:
-                    throw new NotImplementedException($"{ChangeType.Update} has not been implemented yet!");
+                case ChangeType.Delete:
+                    foreach(var curobj in objects)
+                    {
+                        var propNames = GetListOfPropertieNames(curobj);
+					    query += $"DELETE FROM {dataBaseName} WHERE" + (string.Join(" ",
+                            propNames.Select(x=>$" {x} = {GetDictOfProperties(curobj)[x]} AND")
+                            ));
+                        query = query.Substring(0, query.Length-3);
+                        query += "; ";
+					}
+                    return query;
             }
 
             throw new Exception("For some reason No Query String was Created!");
+        }
+
+        public static void DeleteRowFormDB<T>(string dataBaseName, int userid, int convid)
+        {
+            var query = $"DELETE FROM {dataBaseName} WHERE conversationid = {convid} and userid = {userid}";
+            var conn = CreateConnection();
+
+            conn.Open();
+            var cmd = new SqlCommand(query, conn);
+            cmd.ExecuteNonQuery();
+
+            conn.Close();
         }
 
         private static List<PropertyInfo> GetListOfChangableProperties(object obj)
@@ -113,6 +134,15 @@ namespace SciChatProject
             return result;
         }
 
+        private static Dictionary<string, string> GetDictOfProperties(object obj)
+        {
+            var names = GetListOfPropertieNames(obj);
+            var values = GetListOfPropertieValues(obj);
+            var result = new Dictionary<string, string>();
+            names.ForEach(x => result.Add(x, values[names.IndexOf(x)]));
+            return result;
+        }
+
         private static string? ModifyProperty(dynamic? input)
         {
             if(input is string) return $"'{input}'";
@@ -122,7 +152,8 @@ namespace SciChatProject
         public enum ChangeType
         {
             Update,
-            Insert
+            Insert,
+            Delete
         }
         #endregion FILLER
     }

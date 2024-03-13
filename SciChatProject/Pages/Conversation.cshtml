@@ -3,37 +3,121 @@
 @{
 	string convid = Request.Query["conversationid"];
 	string buff = ":";
+	int lastuser = 0;
 }
 
-<script src="_framework/blazor.server.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 	function back(){
 		window.location.href = "/index";
 	}
 	function refreshPage() {
-		location.reload();
+		$.get(document.URL, function (data) {
+			var contentDiv = $('#content');
+			var currentScrollHeight = contentDiv[0].scrollHeight;
+			var scrollTop = contentDiv.scrollTop();
+			contentDiv.html($(data).find('#content').html());
+			var newScrollHeight = contentDiv[0].scrollHeight;
+			var scrollDifference = newScrollHeight - currentScrollHeight;
+			contentDiv.scrollTop(scrollTop + scrollDifference);
+		});
 	}
-	setInterval(refreshPage, 100000);
+	setInterval(refreshPage, 1000);
 </script>
 
 <p>
-	<form id="messagebuttons" method="post">
-	<input type="submit" name="sendmessage" value="Send" />
-	<input type="text" name="contentmessage" placeholder="Message" />
-	<input type="button" name="backbutton" value="Back" onclick="back()" /> <br />
-	<input type="text" name="adduser" placeholder="Username" />
-	<input type="submit" name="addbutton" value="Add" /> <br />
-	</form>
-	<form id="message">
-	@foreach (var message in Models.Conversation.GetConversationByID(Int32.Parse(convid)).GetMessages())
-	{
-		<br /> @message.GetUser().Username
-		@buff
-		<br /> @message.Content
-	}
-	</form>
+	<div class="scrollable-divider" id="content">
+		<div class="card-columns">
+            @{
+                foreach (var message in Models.Conversation.GetConversationByID(Int32.Parse(convid)).GetMessages())
+                {
+                    string time = "time";
+					switch ((message.eventtime - DateTime.Now).Hours)
+                    {
+                        case int n when (n >= 1 && n <= 60):
+							time = (DateTime.Now - message.eventtime).Hours.ToString() + " hours ago";
+                            break;
+                        case int n when (n > 60):
+							time = message.eventtime.ToString();
+                            break;
+                        case int n when (n < 1):
+							time = (DateTime.Now - message.eventtime).Minutes.ToString() + " minutes ago";
+                            break;
+                    }     
+                    if(lastuser == message.GetUser().id)
+					{
+						if (message.GetUser().id == HttpContext.Session.GetInt32("idlogin"))
+						{
+							<br />
+							<div class="style-yourmessage">
+								@message.Content
+							</div>
+                            <div style="display: inline">@time</div>
+                        }
+						else
+						{
+							<br />
+							<div class="style-othermessage">
+								@message.Content
+							</div>
+                            <div style="display: inline">@time</div>
+						}
+					}
+					else
+					{
+						if (message.GetUser().id == HttpContext.Session.GetInt32("idlogin"))
+						{
+							<br />
+							<div class="style-messager">
+								@message.GetUser().Username
+								@buff
+							</div>
+							<br />
+							<div class="style-yourmessage">
+								@message.Content
+                            </div>
+                            <div style="display: inline">@time</div>
+						}
+						else
+						{
+							<br />
+							<div class="style-messager">
+								@message.GetUser().Username
+								@buff
+							</div>
+							<br />
+							<div class="style-othermessage">
+								@message.Content
+							</div>
+                            <div style="display: inline">@time</div>
+                        }
+					}
+					lastuser = message.GetUser().id;
+				}
+			}
+		</div>
+	</div>
+
+	<script>
+		// JavaScript to scroll the div to the bottom -> ONLY on the first load (and when message sent)
+		var scrollableDiv = document.getElementById('content');
+		scrollableDiv.scrollTop = scrollableDiv.scrollHeight;
+	</script>
 	
-	
+	<p>
+		<form id="messagebuttons" method="post">
+			<input type="button" name="backbutton" value="Back" onclick="back()" style="background-color: dodgerblue"/>
+			<input type="text" name="contentmessage" placeholder="Message" />
+			<input type="submit" name="sendmessage" value="Send" style="background-color: white" />
+			<div class="style-conv">
+				<input type="text" name="adduser" placeholder="Username" />
+				<input type="submit" name="addbutton" value="Add" style="background-color: lightsteelblue" />
+				<input type="checkbox" name="leaveCheck" />
+				<input type="submit" name="LeaveChat" value="Leave Chat" style="background-color: darkred" />         
+			</div>       
+			<br />
+		</form>
+</p>
 </p>
 
 

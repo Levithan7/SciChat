@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SciChatProject")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+537fbaab6f530e62a1b27e50dca717d6aedf5547")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5c3884839ad4b08f9c46e1048d0a1b0e41c1a657")]
 [assembly: System.Reflection.AssemblyProductAttribute("SciChatProject")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SciChatProject")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -5,9 +5,22 @@ namespace SciChatProject.Pages
 {
     public class loginModel : PageModel
     {
-        public void OnGet()
+        public IActionResult OnGet()
         {
+			string test = "/Conversation?conversationid=1";
+            while(HttpContext.Session.GetInt32("idlogin") != 1)
+            {
+			    HttpContext.Session.SetInt32("idlogin", 1);
+            }
             
+			return Redirect(test);
+
+			if (HttpContext.Session.GetInt32("idlogin") > 0)
+            {
+                string url = "/Index";
+                return Redirect(url);
+            }
+            return Page();
         }
 
         public IActionResult OnPost()
