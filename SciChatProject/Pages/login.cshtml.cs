@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SciChatProject.Models;
 
 namespace SciChatProject.Pages
 {
@@ -8,10 +7,21 @@ namespace SciChatProject.Pages
     {
         public IActionResult OnGet()
         {
-			HttpContext.Session.SetInt32("idlogin", 2);
-			string url = "/Conversation?conversationid=1";
-			return Redirect(url);
-		}
+			string test = "/Conversation?conversationid=1";
+            while(HttpContext.Session.GetInt32("idlogin") != 1)
+            {
+			    HttpContext.Session.SetInt32("idlogin", 1);
+            }
+            
+			return Redirect(test);
+
+			if (HttpContext.Session.GetInt32("idlogin") > 0)
+            {
+                string url = "/Index";
+                return Redirect(url);
+            }
+            return Page();
+        }
 
         public IActionResult OnPost()
         {
@@ -37,7 +47,7 @@ namespace SciChatProject.Pages
                     return Page();
                 }
             }
-            else if (u == 0)
+            else if (u != 0)
             {
                 Models.User.PutUserInDataBase(pass, Request.Form["signupname"]);
                 HttpContext.Session.SetInt32("idlogin", Models.User.GetLastUser().id);

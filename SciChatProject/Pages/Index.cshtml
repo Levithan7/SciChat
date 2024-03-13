@@ -1,18 +1,142 @@
 ﻿@page
+@using Microsoft.AspNetCore.Http
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
+    int login = HttpContext.Session.GetInt32("idlogin").Value;
+    Models.Conversation[] conversations = new Models.Conversation[55];
     int i = 1;
-    string n = Models.Conversation.GetConversationByID(i).ConversationName;
 }
 
 <p>
-    @foreach (var conv in Models.User.GetUserByID(i).GetConversations())
-    {
-        <br />
-        <a href="/conversation?conversationid=@conv.id" name="chatbutton" target="_blank" class="btn btn-dark">@conv.ConversationName</a>
-        <br />
+    <div style="font-family:Holtwood One SC, serif">
+        @Models.User.GetUserByID(HttpContext.Session.GetInt32("idlogin").Value).Username
+        -
+        @Models.User.GetUserByID(HttpContext.Session.GetInt32("idlogin").Value).id
+    </div>
+   
+    @{
+        foreach (var conv in Models.User.GetUserByID(login).GetConversations())
+        {
+            conversations[i] = conv;
+            i++;
+        }
     }
+    <form id="add" method="post">
+        <input type="text" placeholder="Username" name="adduname" />
+        <input type="text" placeholder="Conversationname" name="addcname" />
+        <input value="add" type="submit" name="addbutton" style="background-color: dodgerblue" />
+        @{
+            if (HttpContext.Session.GetInt32("erroradd") == 1){
+                <div>Maximum Chats reached. Please leave one before adding a new one.</div>
+            }
+        }
+        <br />
+    <div class="style-grid">
+        @{
+            if(conversations[1] != null){<div class="style-griditemnonemetals"><a href="/conversation?conversationid=@conversations[1].id" name="chatbutton" class="style-chatbuttons">H</a></div>}else{<div class="style-griditemnonemetals">H</div>}
+        }
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        @{
+            if(conversations[2] != null){<div class="style-griditemnoblegases"><a href="/conversation?conversationid=@conversations[2].id" name="chatbutton" class="style-chatbuttons">He</a></div>}else{<div class="style-griditemnoblegases">He</div>}
+            if(conversations[3] != null){<div class="style-griditemalkalimetals"><a href="/conversation?conversationid=@conversations[3].id" name="chatbutton" class="style-chatbuttons">Li</a></div>}else{<div class="style-griditemalkalimetals">Li</div>}
+            if(conversations[4] != null){<div class="style-griditemalkalineearthmetals"><a href="/conversation?conversationid=@conversations[4].id" name="chatbutton" class="style-chatbuttons">Be</a></div>}else{<div class="style-griditemalkalineearthmetals">Be</div>}
+        }
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        @{
+            if(conversations[5] != null){<div class="style-griditemmetalloids"><a href="/conversation?conversationid=@conversations[5].id" name="chatbutton" class="style-chatbuttons">B</a></div>}else{<div class="style-griditemmetalloids">B</div>}
+            if(conversations[6] != null){<div class="style-griditemnonemetals"><a href="/conversation?conversationid=@conversations[6].id" name="chatbutton" class="style-chatbuttons">C</a></div>}else{<div class="style-griditemnonemetals">C</div>}
+            if(conversations[7] != null){<div class="style-griditemnonemetals"><a href="/conversation?conversationid=@conversations[7].id" name="chatbutton" class="style-chatbuttons">N</a></div>}else{<div class="style-griditemnonemetals">N</div>}
+            if(conversations[8] != null){<div class="style-griditemnonemetals"><a href="/conversation?conversationid=@conversations[8].id" name="chatbutton" class="style-chatbuttons">O</a></div>}else{<div class="style-griditemnonemetals">O</div>}
+            if(conversations[9] != null){<div class="style-griditemhalogens"><a href="/conversation?conversationid=@conversations[9].id" name="chatbutton" class="style-chatbuttons">F</a></div>}else{<div class="style-griditemhalogens">F</div>}
+            if(conversations[10] != null){<div class="style-griditemnoblegases"><a href="/conversation?conversationid=@conversations[10].id" name="chatbutton" class="style-chatbuttons">Ne</a></div>}else{<div class="style-griditemnoblegases">Ne</div>}
+            if(conversations[11] != null){<div class="style-griditemalkalimetals"><a href="/conversation?conversationid=@conversations[11].id" name="chatbutton" class="style-chatbuttons">Na</a></div>}else{<div class="style-griditemalkalimetals">Na</div>}
+            if(conversations[12] != null){<div class="style-griditemalkalineearthmetals"><a href="/conversation?conversationid=@conversations[12].id" name="chatbutton" class="style-chatbuttons">Mg</a></div>}else{<div class="style-griditemalkalineearthmetals">Mg</div>}
+        }
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        <div class="style-griditemempty"></div>
+        @{
+            if(conversations[13] != null){<div class="style-griditemmetals"><a href="/conversation?conversationid=@conversations[13].id" name="chatbutton" class="style-chatbuttons">Al</a></div>}else{<div class="style-griditemmetals">Al</div>}
+            if(conversations[14] != null){<div class="style-griditemmetalloids"><a href="/conversation?conversationid=@conversations[14].id" name="chatbutton" class="style-chatbuttons">Si</a></div>}else{<div class="style-griditemmetalloids">Si</div>}
+            if(conversations[15] != null){<div class="style-griditemnonemetals"><a href="/conversation?conversationid=@conversations[15].id" name="chatbutton" class="style-chatbuttons">P</a></div>}else{<div class="style-griditemnonemetals">P</div>}
+            if(conversations[16] != null){<div class="style-griditemnonemetals"><a href="/conversation?conversationid=@conversations[16].id" name="chatbutton" class="style-chatbuttons">S</a></div>}else{<div class="style-griditemnonemetals">S</div>}
+            if(conversations[17] != null){<div class="style-griditemhalogens"><a href="/conversation?conversationid=@conversations[17].id" name="chatbutton" class="style-chatbuttons">Cl</a></div>}else{<div class="style-griditemhalogens">Cl</div>}
+            if(conversations[18] != null){<div class="style-griditemnoblegases"><a href="/conversation?conversationid=@conversations[18].id" name="chatbutton" class="style-chatbuttons">Ar</a></div>}else{<div class="style-griditemnoblegases">Ar</div>}
+            if(conversations[19] != null){<div class="style-griditemalkalimetals"><a href="/conversation?conversationid=@conversations[19].id" name="chatbutton" class="style-chatbuttons">K</a></div>}else{<div class="style-griditemalkalimetals">K</div>}
+            if(conversations[20] != null){<div class="style-griditemalkalineearthmetals"><a href="/conversation?conversationid=@conversations[20].id" name="chatbutton" class="style-chatbuttons">Ca</a></div>}else{<div class="style-griditemalkalineearthmetals">Ca</div>}
+            if(conversations[21] != null){<div class="style-griditem"><a href="/conversation?conversationid=@conversations[21].id" name="chatbutton" class="style-chatbuttons">Sa</a></div>}else{<div class="style-griditem">Sa</div>}
+            if(conversations[22] != null){<div class="style-griditem"><a href="/conversation?conversationid=@conversations[22].id" name="chatbutton" class="style-chatbuttons">Ti</a></div>}else{<div class="style-griditem">Ti</div>}
+            if(conversations[23] != null){<div class="style-griditem"><a href="/conversation?conversationid=@conversations[23].id" name="chatbutton" class="style-chatbuttons">V</a></div>}else{<div class="style-griditem">V</div>}
+            if(conversations[24] != null){<div class="style-griditem"><a href="/conversation?conversationid=@conversations[24].id" name="chatbutton" class="style-chatbuttons">Cr</a></div>}else{<div class="style-griditem">Cr</div>}
+            if(conversations[25] != null){<div class="style-griditem"><a href="/conversation?conversationid=@conversations[25].id" name="chatbutton" class="style-chatbuttons">Mn</a></div>}else{<div class="style-griditem">Mn</div>}
+            if(conversations[26] != null){<div class="style-griditem"><a href="/conversation?conversationid=@conversations[26].id" name="chatbutton" class="style-chatbuttons">Fe</a></div>}else{<div class="style-griditem">Fe</div>}
+            if(conversations[27] != null){<div class="style-griditem"><a href="/conversation?conversationid=@conversations[27].id" name="chatbutton" class="style-chatbuttons">Co</a></div>}else{<div class="style-griditem">Co</div>}
+            if(conversations[28] != null){<div class="style-griditem"><a href="/conversation?conversationid=@conversations[28].id" name="chatbutton" class="style-chatbuttons">Ni</a></div>}else{<div class="style-griditem">Ni</div>}
+            if(conversations[29] != null){<div class="style-griditem"><a href="/conversation?conversationid=@conversations[29].id" name="chatbutton" class="style-chatbuttons">Cu</a></div>}else{<div class="style-griditem">Cu</div>}
+            if(conversations[30] != null){<div class="style-griditem"><a href="/conversation?conversationid=@conversations[30].id" name="chatbutton" class="style-chatbuttons">Zn</a></div>}else{<div class="style-griditem">Zn</div>}
+            if(conversations[31] != null){<div class="style-griditemmetals"><a href="/conversation?conversationid=@conversations[31].id" name="chatbutton" class="style-chatbuttons">Ga</a></div>}else{<div class="style-griditemmetals">Ga</div>}
+            if(conversations[32] != null){<div class="style-griditemmetalloids"><a href="/conversation?conversationid=@conversations[32].id" name="chatbutton" class="style-chatbuttons">Ge</a></div>}else{<div class="style-griditemmetalloids">Ge</div>}
+            if(conversations[33] != null){<div class="style-griditemmetalloids"><a href="/conversation?conversationid=@conversations[33].id" name="chatbutton" class="style-chatbuttons">As</a></div>}else{<div class="style-griditemmetalloids">As</div>}
+            if(conversations[34] != null){<div class="style-griditemnonemetals"><a href="/conversation?conversationid=@conversations[34].id" name="chatbutton" class="style-chatbuttons">Se</a></div>}else{<div class="style-griditemnonemetals">Se</div>}
+            if(conversations[35] != null){<div class="style-griditemhalogens"><a href="/conversation?conversationid=@conversations[35].id" name="chatbutton" class="style-chatbuttons">Br</a></div>}else{<div class="style-griditemhalogens">Br</div>}
+            if(conversations[36] != null){<div class="style-griditemnoblegases"><a href="/conversation?conversationid=@conversations[36].id" name="chatbutton" class="style-chatbuttons">Kr</a></div>}else{<div class="style-griditemnoblegases">Kr</div>}
+            if(conversations[37] != null){<div class="style-griditemalkalimetals"><a href="/conversation?conversationid=@conversations[37].id" name="chatbutton" class="style-chatbuttons">Rb</a></div>}else{<div class="style-griditemalkalimetals">Rb</div>}
+            if(conversations[38] != null){<div class="style-griditemalkalineearthmetals"><a href="/conversation?conversationid=@conversations[38].id" name="chatbutton" class="style-chatbuttons">Sr</a></div>}else{<div class="style-griditemalkalineearthmetals">Sr</div>}
+            if(conversations[39] != null){<div class="style-griditem"><a href="/conversation?conversationid=@conversations[39].id" name="chatbutton" class="style-chatbuttons">Y</a></div>}else{<div class="style-griditem">Y</div>}
+            if(conversations[40] != null){<div class="style-griditem"><a href="/conversation?conversationid=@conversations[40].id" name="chatbutton" class="style-chatbuttons">Zr</a></div>}else{<div class="style-griditem">Zr</div>}
+            if(conversations[41] != null){<div class="style-griditem"><a href="/conversation?conversationid=@conversations[41].id" name="chatbutton" class="style-chatbuttons">Nb</a></div>}else{<div class="style-griditem">Nb</div>}
+            if(conversations[42] != null){<div class="style-griditem"><a href="/conversation?conversationid=@conversations[42].id" name="chatbutton" class="style-chatbuttons">Mo</a></div>}else{<div class="style-griditem">Mo</div>}
+            if(conversations[43] != null){<div class="style-griditem"><a href="/conversation?conversationid=@conversations[43].id" name="chatbutton" class="style-chatbuttons">Tc</a></div>}else{<div class="style-griditem">Tc</div>}
+            if(conversations[44] != null){<div class="style-griditem"><a href="/conversation?conversationid=@conversations[44].id" name="chatbutton" class="style-chatbuttons">Ru</a></div>}else{<div class="style-griditem">Ru</div>}
+            if(conversations[45] != null){<div class="style-griditem"><a href="/conversation?conversationid=@conversations[45].id" name="chatbutton" class="style-chatbuttons">Rh</a></div>}else{<div class="style-griditem">Rh</div>}
+            if(conversations[46] != null){<div class="style-griditem"><a href="/conversation?conversationid=@conversations[46].id" name="chatbutton" class="style-chatbuttons">Pd</a></div>}else{<div class="style-griditem">Pd</div>}
+            if(conversations[47] != null){<div class="style-griditem"><a href="/conversation?conversationid=@conversations[47].id" name="chatbutton" class="style-chatbuttons">Ag</a></div>}else{<div class="style-griditem">Ag</div>}
+            if(conversations[48] != null){<div class="style-griditem"><a href="/conversation?conversationid=@conversations[48].id" name="chatbutton" class="style-chatbuttons">Cd</a></div>}else{<div class="style-griditem">Cd</div>}
+            if(conversations[49] != null){<div class="style-griditemmetals"><a href="/conversation?conversationid=@conversations[49].id" name="chatbutton" class="style-chatbuttons">In</a></div>}else{<div class="style-griditemmetals">In</div>}
+            if(conversations[50] != null){<div class="style-griditemmetals"><a href="/conversation?conversationid=@conversations[50].id" name="chatbutton" class="style-chatbuttons">Sn</a></div>}else{<div class="style-griditemmetals">Sn</div>}
+            if(conversations[51] != null){<div class="style-griditemmetalloids"><a href="/conversation?conversationid=@conversations[51].id" name="chatbutton" class="style-chatbuttons">Sb</a></div>}else{<div class="style-griditemmetalloids">Sb</div>}
+            if(conversations[52] != null){<div class="style-griditemmetalloids"><a href="/conversation?conversationid=@conversations[52].id" name="chatbutton" class="style-chatbuttons">Te</a></div>}else{<div class="style-griditemmetalloids">Te</div>}
+            if(conversations[53] != null){<div class="style-griditemhalogens"><a href="/conversation?conversationid=@conversations[53].id" name="chatbutton" class="style-chatbuttons">I</a></div>}else{<div class="style-griditemhalogens">I</div>}
+            if(conversations[54] != null){<div class="style-griditemnoblegases"><a href="/conversation?conversationid=@conversations[54].id" name="chatbutton" class="style-chatbuttons">Xe</a></div>}else{<div class="style-griditemnoblegases">Xe</div>}
+        }
+    </div>
+        <br />
+        <br />
+        <input value="disconnect" type="submit" name="disconnectbutton" style="background-color: darkred" />
+    </form>
 </p>
+
 
 

@@ -1,19 +1,22 @@
 ﻿@page
 @model SciChatProject.Pages.loginModel
 @{
+
+
+
 }
 <p>
-    <div>Log in here:</div>
+    <div style="font-family:Holtwood One SC, serif">Log in here:</div>
     <form id="loginform" method="post">
         <input type="text" placeholder="Username" name="loginname" />
         <input type="password" placeholder="Password" name="loginpassword" />
-        <input type="submit" value="Log in" name="loginsubmit" />
+        <input type="submit" value="Log in" name="loginsubmit" style="background-color: white"/>
     </form> 
-    <div>or sign up here:</div>
+    <div style="font-family:Holtwood One SC, serif">or sign up here:</div>
     <form id="signupform" method="post">
         <input type="text" placeholder="Name" name="signupname" />
         <input type="password" placeholder="Password" name="signuppassword" />
-        <input type="submit" value="Sign up" name="signupsubmit" />
+        <input type="submit" value="Sign up" name="signupsubmit" style="background-color: white" />
     </form>
     @HttpContext.Session.GetString("error")
 </p>
