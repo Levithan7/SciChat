@@ -4,6 +4,6 @@ CREATE TABLE conversations(
 );
 
 INSERT INTO conversations(conversationname)
-VALUES('TestChat'),('TestChat2'),('TestChat3');
+VALUES('TestChat');
 
 DROP TABLE conversations;

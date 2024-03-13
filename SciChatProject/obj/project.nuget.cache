@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "cW+Hc1rwWcRMZE5y8GMneiWVcSJPVuI5RnbUaW6uy272YBfi/nmChup/EhVtebUtsIj0RHkzxWbADG9hQ5y1Qw==",
+  "dgSpecHash": "1nV6pO/WJSlK59XgRQxWV2zPrjUtaUCYaBadwtBdVoUXXgQjHM1ug5+xSBBXXovtmSmBXorv/sxvCwHrWm129w==",
   "success": true,
   "projectFilePath": "D:\\Developing\\GitHub\\SciChat\\SciChatProject\\SciChatProject.csproj",
   "expectedPackageFiles": [
@@ -15,6 +15,7 @@
     "C:\\Users\\levij\\.nuget\\packages\\skiasharp.nativeassets.macos\\2.88.7\\skiasharp.nativeassets.macos.2.88.7.nupkg.sha512",
     "C:\\Users\\levij\\.nuget\\packages\\skiasharp.nativeassets.win32\\2.88.7\\skiasharp.nativeassets.win32.2.88.7.nupkg.sha512",
     "C:\\Users\\levij\\.nuget\\packages\\system.data.sqlclient\\4.8.6\\system.data.sqlclient.4.8.6.nupkg.sha512",
+    "C:\\Users\\levij\\.nuget\\packages\\system.linq.dynamic.core\\1.3.10\\system.linq.dynamic.core.1.3.10.nupkg.sha512",
     "C:\\Users\\levij\\.nuget\\packages\\system.security.accesscontrol\\4.7.0\\system.security.accesscontrol.4.7.0.nupkg.sha512",
     "C:\\Users\\levij\\.nuget\\packages\\system.security.principal.windows\\4.7.0\\system.security.principal.windows.4.7.0.nupkg.sha512"
   ],
