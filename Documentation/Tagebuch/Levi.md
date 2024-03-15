@@ -17,8 +17,7 @@ Neben den nun genannten spezifisichen Aktionen sei gesagt, dass ich das Projekt 
 22. Januar:
     - Weitere Planung der Fortsetzung mit Till per Anruf (Keine Präsenzuntericht)
 24. Januar:
-    - Vorbereitung der Entwicklungsumgebung auf den Schul-Laptops
-    - Till bei seiner Vorbereitung helfen
+    - Vorbereitung der Entwicklungsumgebungen auf den Schul-Laptops
 29. Januar:
     - Fertigstellung der Vorbereiung der Entwicklungsumgebung
     - Till bei seiner Arbeit untersützen
@@ -67,3 +66,5 @@ Neben den nun genannten spezifisichen Aktionen sei gesagt, dass ich das Projekt 
   - Anfangen meine Änderungen hinsichtlich des autoupdates auf Tills Änderungen zu übetragen
 13. März:
   - Übertragen der Änderungen fertiggestellt
+15. März:
+  - Finalisierung des Projektes
