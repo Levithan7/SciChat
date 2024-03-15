@@ -1,4 +1,5 @@
 Neben den nun genannten spezifisichen Aktionen sei gesagt, dass ich das Projekt im allgemeinen organisiert habe. Till und ich haben zusätzlich zur Unterrichtinternen und der unterichtexternen Arbeit ab und zu längere Absprachen (teilw. 45-60 Minuten) hinsichtlich des Projekts zu halten, in denen Zwischenstände besprochen wurden. Unter Organisation fällt dabei vor allem das zusammenfügen der einzelnen Code-Stränge. Auch wenn GitHub dabei tatkräfitg unterstützt, müssen viele Änderungen dann doch manuell durchgeführt werden, was wiederrum durch eine dafür eingebaute Funktionalität von Visual Studio deutlich vereinfacht wurde.
+In dem folgenden Tagebuch steht oftmals "Till bei seiner Arbeit untersützen". Das bedeutet nicht, dass Till nicht in der Lage gewesen wäre diese Sachen selbst zu machen sondern liegt viel mehr daran, dass ich selbst mit den Schul-Laptops nicht gut klargekommen bin und so einen Teil der Zeit lieber damit verbracht habe Till zu helfen, wenn er vor (meist auch eher kleineren) Problemen stand, die er zwar selbst hätte lösen können, in Zusammenarbeit mit mir (alleine dadurch, dass 2 statt 1 Kopf denken) schneller lösen konnte.
 
 09. Januar:
     - Aufsetzen des Projektes
@@ -20,7 +21,6 @@ Neben den nun genannten spezifisichen Aktionen sei gesagt, dass ich das Projekt 
     - Vorbereitung der Entwicklungsumgebungen auf den Schul-Laptops
 29. Januar:
     - Fertigstellung der Vorbereiung der Entwicklungsumgebung
-    - Till bei seiner Arbeit untersützen
     - Anfangen den Graphbuilder zu erweitern
 31. Januar:
     - Erweiterung des GraphBuilders: mathematische Funktionen können teilw. dargestellt werden
@@ -28,7 +28,7 @@ Neben den nun genannten spezifisichen Aktionen sei gesagt, dass ich das Projekt 
     - Darstellung von Exponenten
 07. Februar:
     - Veränderung der .gitignore
-    - Till helfen und vereinzelte Arbeitsstücke von ihm zusammensetzen
+    - Mit Till Probleme am Laptop beheben, sodass er weiterarbeiten kann und vereinzelte Arbeitsstücke von ihm zusammensetzen
 12. Februar:
     - Offene Fragen mit Till klären
     - Till unterstützen in seiner Arbeit
