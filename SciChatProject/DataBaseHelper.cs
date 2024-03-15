@@ -67,19 +67,65 @@ namespace SciChatProject
         #region FILLER
         public static void ExecuteChange<T>(string dataBaseName, List<T> objects, ChangeType changeType = ChangeType.Insert)
         {
-            var query = CreateQueryForChange(dataBaseName, objects, changeType);
+            var query = CreateQueryForChange(dataBaseName, objects, out var parameters, changeType);
             var conn = CreateConnection();
 
             conn.Open();
             var cmd = new SqlCommand(query, conn);
+            foreach(var param in parameters)
+            {
+                cmd.Parameters.AddWithValue(param.Key, param.Value);
+            }
             cmd.ExecuteNonQuery();
             
             conn.Close();
         }
-        private static string CreateQueryForChange<T>(string dataBaseName, List<T> objects, ChangeType changeType=ChangeType.Insert)
+
+        private static List<string> GetCommandParameters(object x, List<KeyValuePair<string, string>> parameters)
+        {
+            int counter=0;
+            parameters.AddRange(GetListOfPropertieValues(x).Select(y=>new KeyValuePair<string, string>($"@ARG{counter++}", y)).ToList());
+            return parameters.Select(x => x.Key).ToList();
+		}
+
+		private static string CreateQueryForChange<T>(string dataBaseName, List<T> objects, out List<KeyValuePair<string, string>> parameters, ChangeType changeType = ChangeType.Insert)
+        {
+			List<KeyValuePair<string, string>> parametersUpdated = new();
+            parameters = new();
+			string query = string.Empty;
+			switch (changeType)
+			{
+				case ChangeType.Insert:
+					query =
+					   $"INSERT INTO {dataBaseName} " +
+					   objects.Select(x => $"({string.Join(",", GetListOfPropertieNames(x))})").First().ToString() + // column names
+					   " VALUES " +
+					   string.Join(", ", objects.Select(x => $"({string.Join(",", GetCommandParameters(x, parametersUpdated))})").First().ToString()); // column values
+					parameters = parametersUpdated;
+					return query;
+
+				// not suitable for anythin with '' in it
+                case ChangeType.Delete:
+					foreach (var curobj in objects)
+					{
+						var propNames = GetListOfPropertieNames(curobj);
+						query += $"DELETE FROM {dataBaseName} WHERE" + (string.Join(" ",
+							propNames.Select(x => $" {x} = {GetDictOfProperties(curobj)[x]} AND")
+							));
+						query = query.Substring(0, query.Length - 3);
+						query += "; ";
+					}
+					return query;
+			}
+            
+
+			throw new Exception("For some reason No Query String was Created!");
+		}
+
+
+		private static string CreateQueryForChange<T>(string dataBaseName, List<T> objects, ChangeType changeType=ChangeType.Insert)
         {
             string query = string.Empty;
-
             switch (changeType)
             {
                 case ChangeType.Insert:
@@ -143,9 +189,9 @@ namespace SciChatProject
             return result;
         }
 
+        // OUTDATED -> not needed right now; but could be used later in case needed
         private static string? ModifyProperty(dynamic? input)
         {
-            if(input is string) return $"'{input}'";
             return input?.ToString();
         }
 

@@ -1,9 +1,10 @@
 ﻿@page
 @model SciChatProject.Pages.ConversationModel
 @{
-	string convid = Request.Query["conversationid"];
-	string buff = ":";
-	int lastuser = 0;
+    string convid = Request.Query["conversationid"];
+    string buff = ":";
+    int lastuser = 0;
+    string style = "";
 }
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -31,67 +32,57 @@
             @{
                 foreach (var message in Models.Conversation.GetConversationByID(Int32.Parse(convid)).GetMessages())
                 {
+                    message.ParseAllCommands();
                     string time = "time";
-					switch ((message.eventtime - DateTime.Now).Hours)
+                    switch ((message.eventtime - DateTime.Now).Hours)
                     {
                         case int n when (n >= 1 && n <= 60):
-							time = (DateTime.Now - message.eventtime).Hours.ToString() + " hours ago";
+                            time = (DateTime.Now - message.eventtime).Hours.ToString() + " hours ago";
                             break;
                         case int n when (n > 60):
-							time = message.eventtime.ToString();
+                            time = message.eventtime.ToString();
                             break;
                         case int n when (n < 1):
-							time = (DateTime.Now - message.eventtime).Minutes.ToString() + " minutes ago";
+                            time = (DateTime.Now - message.eventtime).Minutes.ToString() + " minutes ago";
                             break;
                     }     
-                    if(lastuser == message.GetUser().id)
-					{
-						if (message.GetUser().id == HttpContext.Session.GetInt32("idlogin"))
-						{
-							<br />
-							<div class="style-yourmessage">
-								@message.Content
-							</div>
-                            <div style="display: inline">@time</div>
+                    if (message.GetUser().id == HttpContext.Session.GetInt32("idlogin"))
+                    {
+                        if (Models.Message.IsActive == true)
+                        {
+                            style = "style-yourmessagegraphyes";
+                            Models.Message.IsActive = false;
                         }
-						else
-						{
-							<br />
-							<div class="style-othermessage">
-								@message.Content
-							</div>
-                            <div style="display: inline">@time</div>
-						}
-					}
-					else
-					{
-						if (message.GetUser().id == HttpContext.Session.GetInt32("idlogin"))
-						{
-							<br />
-							<div class="style-messager">
-								@message.GetUser().Username
-								@buff
-							</div>
-							<br />
-							<div class="style-yourmessage">
-								@message.Content
-                            </div>
-                            <div style="display: inline">@time</div>
-						}
-						else
-						{
-							<br />
-							<div class="style-messager">
-								@message.GetUser().Username
-								@buff
-							</div>
-							<br />
-							<div class="style-othermessage">
-								@message.Content
-							</div>
-                            <div style="display: inline">@time</div>
+                        else
+                        {
+                            style = "style-yourmessagegraphno";
+                        }                      
+                    }
+                    else
+                    {
+                        if (Models.Message.IsActive == true)
+                        {
+                            style = "style-othermessagegraphyes";
+                            Models.Message.IsActive = false;
                         }
-					}
+                        else
+                        {
+                            style = "style-othermessagegraphno";
+                        }
+                    }
+                    if(lastuser != message.GetUser().id)
+					{
+                        <br />
+                        <div class="style-messager">
+                            @message.GetUser().Username
+                            @buff
+                        </div>
+                    }
+                    <br />
+                    <div class="@style">
+                        @Html.Raw(message.Content)
+                    </div>
+                    @time
 					lastuser = message.GetUser().id;
 				}
 			}
@@ -107,7 +98,7 @@
 	<p>
 		<form id="messagebuttons" method="post">
 			<input type="button" name="backbutton" value="Back" onclick="back()" style="background-color: dodgerblue"/>
-			<input type="text" name="contentmessage" placeholder="Message" />
+        <input type="text" name="contentmessage" class="style-sendmessage" placeholder="Message" />
 			<input type="submit" name="sendmessage" value="Send" style="background-color: white" />
 			<div class="style-conv">
 				<input type="text" name="adduser" placeholder="Username" />

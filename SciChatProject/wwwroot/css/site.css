@@ -38,7 +38,6 @@ body {
 
 .style-conv {
     display: inline;
-    margin: 320px;
 }
 
 .style-card {
@@ -48,7 +47,7 @@ body {
 }
 
 
-.style-yourmessage {
+.style-yourmessagegraphno {
     border-radius: 5px;
     display: inline;
     background-color: darkturquoise;
@@ -63,7 +62,17 @@ body {
     margin-left: 20px;
 }
 
-.style-othermessage {
+.style-yourmessagegraphyes {
+    border-radius: 5px;
+    background-color: darkturquoise;
+    width: 320px;
+    height: 310px;
+    border-style: ridge;
+    border-color: darkcyan;
+    margin-left: 20px;
+}
+
+.style-othermessagegraphno {
     border-radius: 5px;
     display: inline;
     background-color: aliceblue;
@@ -78,9 +87,24 @@ body {
     margin-left: 20px;
 }
 
+.style-othermessagegraphyes {
+    border-radius: 5px;
+    background-color: aliceblue;
+    width: 320px;
+    height: 310px;
+    border-style: ridge;
+    border-color: white;
+    margin-left: 20px;
+}
+
 .style-messager {
     display: inline;
     font-family:Holtwood One SC, serif;
+}
+
+.style-sendmessage {
+    height: 40px;
+    width: 1000px;
 }
 
 .style-chatbuttons {
@@ -172,6 +196,120 @@ body {
     text-align: center;
     background-color: indianred;
 }
+
+.style-griditemnonemetals .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: darkturquoise;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+}
+
+.style-griditemnonemetals:hover .tooltiptext {
+    visibility: visible;
+}
+
+.style-griditemalkalimetals .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: darkturquoise;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+}
+
+.style-griditemalkalimetals:hover .tooltiptext {
+    visibility: visible;
+}
+
+.style-griditemalkalineearthmetals .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: darkturquoise;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+}
+
+.style-griditemalkalineearthmetals:hover .tooltiptext {
+    visibility: visible;
+}
+
+.style-griditemnoblegases .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: darkturquoise;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+}
+
+.style-griditemnoblegases:hover .tooltiptext {
+    visibility: visible;
+}
+
+.style-griditemhalogens .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: darkturquoise;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+}
+
+.style-griditemhalogens:hover .tooltiptext {
+    visibility: visible;
+}
+
+.style-griditemmetalloids .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: darkturquoise;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+}
+
+.style-griditemmetalloids:hover .tooltiptext {
+    visibility: visible;
+}
+
+.style-griditemmetals .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: darkturquoise;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+}
+
+.style-griditemmetals:hover .tooltiptext {
+    visibility: visible;
+}
+
+
 
 .style-griditem {
     border: 1px solid;

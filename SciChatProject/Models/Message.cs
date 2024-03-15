@@ -22,6 +22,8 @@ namespace SciChatProject.Models
 
         public DateTime eventtime { get; set; }
 
+        public static bool IsActive { get; set; }
+
         [SQLProperty(Name="content")] public string Content { get; set; }
         [SQLProperty(Name="userid")] public int UserID { get; set; }
         [SQLProperty(Name="conversationid")] public int ConversationID { get; set; }
@@ -89,6 +91,7 @@ namespace SciChatProject.Models
                 var gb = m.Groups["gb"].Value;
                 var graph = CreateGraph(gb);
                 msg = msg.Replace(m.Value, graph);
+                IsActive = true;
             }
             return msg;
         }
@@ -98,8 +101,8 @@ namespace SciChatProject.Models
             #region defaultvalues
             string plottype = "scatter", xlabel=string.Empty, ylabel=string.Empty, datatype=string.Empty;
             double[] xdata = Array.Empty<double>(), ydata = Array.Empty<double>();
-            int[] scale = { 100, 100};
-            double? xmin = null, xmax = null, ymin = null, ymax = null;
+            int[] scale = { 300, 300};
+            double? xmin = 0, xmax = 10, ymin = 0, ymax = 10;
             
             Match m;
             Plot myPlot = new();
@@ -238,6 +241,7 @@ namespace SciChatProject.Models
         }
         #endregion MessageParser
 
+        #region ExpressionConverter
         private static Func<double, double> StringToLambda(string expression)
         {
             return DynamicExpressionParser.ParseLambda<double, double>(new ParsingConfig(), true, $"x=>{MathToLambda(expression)}").Compile();
@@ -275,12 +279,12 @@ namespace SciChatProject.Models
                 new("truncate", "Math.Truncate")
             };
 
+            math = ConvertCurrentLevelParantatheses(math);
             foreach(var conversion in converter)
             {
                 math = math.Replace(conversion.Key, conversion.Value);
             }
-            var final = ConvertCurrentLevelParantatheses(math);
-            return final;
+            return math;
         }
 
         public static int FindControParan(int idx, string test, int direction, bool returnCharacterIfNoParan=false) // direction 1-> forward ) searched -1-> backward ( searched
@@ -368,6 +372,7 @@ namespace SciChatProject.Models
             var final = ConvertExponentToPow(result);
             return final;
         }
-    }
+		#endregion ExpressionConverter
+	}
 
 }
