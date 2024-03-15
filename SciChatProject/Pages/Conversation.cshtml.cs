@@ -10,12 +10,13 @@ namespace SciChatProject.Pages
 {
     public class ConversationModel : PageModel
     {
-		public IActionResult OnGet()
+        public IActionResult OnGet()
 		{
             if (HttpContext.Session.GetInt32("idlogin") > 0)
             {
                 return Page();
             }
+            
             string url = "/login";
             return Redirect(url);
         }
@@ -42,6 +43,5 @@ namespace SciChatProject.Pages
             }
 			return Page();
 		}
- 
 	}
 }
