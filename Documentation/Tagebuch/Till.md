@@ -4,7 +4,9 @@ Obwohl wir zusammen gearbeitet haben, muss ich auch nochmal sagen, dass Levi die
 09. Januar - 24. Januar:
   - Aufsetzen des Projektes
   - erste Schritte und Einfindung in Github, C# und Visual Studio
-  - 22. Januar: Planungen und Besprechung der Seite mit Levi (Keine Präsenzunterricht)
+
+22. Januar:
+  - Planungen und Besprechung der Seite mit Levi (Keine Präsenzunterricht)
 24. Januar:
   - Vorbereitung der Entwicklungsumgebung auf den Schul-Laptops
 29. Januar - 06. Februar:
