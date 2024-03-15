@@ -2,6 +2,30 @@
 
 ## Nutzung von SciChat als regulärer Nutzer
 
+Es gibt 3 hauptsächliche genutzte Seiten. Die Startseite ist die Indexpage, wobei man immer erst zur Loginpage weiter geleitet wird, wenn man sich noch nicht angemeldet hat.
+
+**Loginpage**
+Auf der Loginpage kann man sich einloggen und einen neuen Account erstellen, mit seinem Benutzernamen und Password.
+Die Grundeinstellung ist Login und wenn man einen neuen Account erstellen möchte, muss man einen Haken im Feld über der Eingaben setzen.
+Jetzt wird der Benutzername und das Password als Anmeldedaten übernommen. Nach dem Anmelden kommt man zur Indexpage.
+
+**Indexpage**
+Hier wird einem angezeigt welcher Account gerade genutzt wird und die dazugehörige ID.
+Jetzt kann man eine Conversation hinzufügen, mit einem Namen. Darunter sind die ersten 54 Elemente des Periodensystems, wo jeder ein Chat ist, sofern er so viele vorhanden sind.
+Wenn ein Chat vorhanden ist, wird die Schrift Blau und man kann das Element mit der Maus hovern und es wird der Chatname angezeigt.
+Dort drunter ist ein Disconnectbutton der einen abmeldet und zur Loginpage bringt. Wenn man auf ein Element gedrückt hat, das ein Chat hat, wird man zu diesem Conversationpage gebracht.
+
+**Conversationpage**
+Hier gibt es jetzt eine Chatbox, wo alle Nachrichten untereinander aufgelistet werden. Die türkisen Box sind die eigenen Nachrichten und die weißen, der der anderen User.
+Über jeder Box steht nochmal der Benutzername und neben der Box die Zeit vor wie viel Minuten, Stunden oder Tage die Nachricht gesendet wurde.
+Um ältere Nachrichten anzusehen, gibt es ein Scrollleiste. Unter der Chatbox gibt es einmal ein Button um wieder auf die Indexpage zurückzugehen.
+Dazu gibt es ein Eingabefeld für die Nachricht und ein Button um die Nachricht abzusenden.
+Im Eingabefeld für die Nachrichten können, wie in der Dokumentation schon genannten, Befehle von Bots, LaTeX und Graphen eingefügt werden.
+Dort drunter ist noch ein Feld und Button, um eine Person der Conversation hinzuzufügen.
+Daneben ist noch ein Button um den Chat zu verlassen. Dafür muss aber auch ein Feld für ein Haken daneben angeklickt werden, damit man nicht aus Versehen den Chat verlässt.
+Wenn man ein Chat verlässt, kann dieser von alleine nicht mehr angesehen werden. Der User müsste von einem User, der noch in der Conversation ist, hinzu gefügt werden.
+Dabei wird der Chat aus dem Periodensystem entfernt und alle Chats rücken nach.
+
 ## Nutzung von SciChat als Bot-Developer
 In SciChat ist es möglich einen Nutzer zu erstellen, den mal per C#-Programmcode automatisieren kann. Ein solcher automatisierter Nutzer wird ab jetzt als `Bot` bezeichnet. Um  einen Bot zu erstellen ist [https://github.com/Levithan7/SciChat/tree/main/SciChatApi](Die BotAPI) zu klonen. Dann lässt sich in der `Program.cs` eine Instanz der `Bot`-Klasse erstellen und darüber Handeln. Ein Beispiel dafür ist [https://github.com/Levithan7/SciChat/tree/main/SciChatApi](hier) beflindlich. Die restlichen Dateien sind nicht zu modifizieren.
 
