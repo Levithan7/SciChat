@@ -2,20 +2,25 @@
 
 ## Nutzung von SciChat als regulärer Nutzer
 
+**<====DOKU AB HIER IST VON TILL:====>**
+
 Es gibt 3 hauptsächliche genutzte Seiten. Die Startseite ist die Indexpage, wobei man immer erst zur Loginpage weiter geleitet wird, wenn man sich noch nicht angemeldet hat.
 
 **Loginpage**
+
 Auf der Loginpage kann man sich einloggen und einen neuen Account erstellen, mit seinem Benutzernamen und Password.
 Die Grundeinstellung ist Login und wenn man einen neuen Account erstellen möchte, muss man einen Haken im Feld über der Eingaben setzen.
 Jetzt wird der Benutzername und das Password als Anmeldedaten übernommen. Nach dem Anmelden kommt man zur Indexpage.
 
 **Indexpage**
+
 Hier wird einem angezeigt welcher Account gerade genutzt wird und die dazugehörige ID.
 Jetzt kann man eine Conversation hinzufügen, mit einem Namen. Darunter sind die ersten 54 Elemente des Periodensystems, wo jeder ein Chat ist, sofern er so viele vorhanden sind.
 Wenn ein Chat vorhanden ist, wird die Schrift Blau und man kann das Element mit der Maus hovern und es wird der Chatname angezeigt.
 Dort drunter ist ein Disconnectbutton der einen abmeldet und zur Loginpage bringt. Wenn man auf ein Element gedrückt hat, das ein Chat hat, wird man zu diesem Conversationpage gebracht.
 
 **Conversationpage**
+
 Hier gibt es jetzt eine Chatbox, wo alle Nachrichten untereinander aufgelistet werden. Die türkisen Box sind die eigenen Nachrichten und die weißen, der der anderen User.
 Über jeder Box steht nochmal der Benutzername und neben der Box die Zeit vor wie viel Minuten, Stunden oder Tage die Nachricht gesendet wurde.
 Um ältere Nachrichten anzusehen, gibt es ein Scrollleiste. Unter der Chatbox gibt es einmal ein Button um wieder auf die Indexpage zurückzugehen.
@@ -26,8 +31,58 @@ Daneben ist noch ein Button um den Chat zu verlassen. Dafür muss aber auch ein 
 Wenn man ein Chat verlässt, kann dieser von alleine nicht mehr angesehen werden. Der User müsste von einem User, der noch in der Conversation ist, hinzu gefügt werden.
 Dabei wird der Chat aus dem Periodensystem entfernt und alle Chats rücken nach.
 
+**<====DOKU AB HIER IST VON LEVI:====>**
+
+**Wissenschaftliche Nachrichten**
+
+Damit SciChat seinem Namen treu werden kann, muss es neben der PSE-Ansicht der Chats auch eine Funktion geben, mit der es möglich ist sowohl Formeln als auch Graphen darzustellen. Die Formel-Darstellung
+erfolgt dabei wie üblich per LaTex. Beispiel: $$x^2 \cdot 3$$
+Selbst programmiert hat Levi den sogenannten Graph-Builder. Den Befehl einen Graphen zu erstellen eröffnet man stets mit `\begingraph` und endet mit `\endgraph`.
+Dazwischen gibt es einige Argumente auf die im folgenden eingegangen wird:
+
+**Diagramm-Typ**
+
+`\type='<typ>'`. Mögliche Werte für `<type>` sind:
+'scatter' (Punkte/Linien), 'Bar' (Säulendiagramm), 'pie' (Kuchendiagramm) sind.
+
+**Skalierung**
+
+`\scale=BreitexHöhe`
+
+**\datatype**
+
+Sollte Verwendet werden um zu unterscheiden, ob Funktionen oder Roh-Daten dargestellt werden. Die Implementation hiervon ist jedoch aus Zeitgründen nicht erfolgt. Trotzdem ist die Basis dazu noch im Code
+falls das noch passieren sollte.
+
+**Beschriftung der Graphen**
+
+`\xlabel='<text>'` und `\ylabel='<text>'`
+
+**Dargestellter Bereich**
+
+`\xmin='<wert>'`;`\xmax='<wert>'`;`\ymin='<wert>'`;`\ymax='<wert>'`
+
+**Darstellen von Funktionen**
+
+Bitte nicht gleichzeitig mit Darstellung von Roh-Daten verwenden!
+`\function='<MatheFunktion>'` z.B. `\function='x^2 - e^x'`
+
+**Rohdaten-Einzel**
+
+Bitte nicht gleichzeitig mit Darstellung von Funktionen oder Rohdaten-Gemeinsam verwenden!
+`\xdata=<Daten>` z.B. `\xdata=[1,2,3,4,5]`
+
+`\ydata=<Daten>` z.B. `\ydata=[5,4,3,2,1]`
+Bitte keine Lücken zwischen den Dateneinträgen lassen!
+
+**Rohdaten-Gemeinsam**
+
+Bitte nicht gleichzeitig mit Darstellung von Funktionen oder Rohdaten-Einzel verwenden!
+`\xydata=<Daten>` z.B. `\xydata=[{1,5},{2,4},{3,3},{4,2},{5,1}`
+Bitte keine Lücken zwischen den Dateneinträgen lassen!
+
 ## Nutzung von SciChat als Bot-Developer
-In SciChat ist es möglich einen Nutzer zu erstellen, den mal per C#-Programmcode automatisieren kann. Ein solcher automatisierter Nutzer wird ab jetzt als `Bot` bezeichnet. Um  einen Bot zu erstellen ist [https://github.com/Levithan7/SciChat/tree/main/SciChatApi](Die BotAPI) zu klonen. Dann lässt sich in der `Program.cs` eine Instanz der `Bot`-Klasse erstellen und darüber Handeln. Ein Beispiel dafür ist [https://github.com/Levithan7/SciChat/tree/main/SciChatApi](hier) beflindlich. Die restlichen Dateien sind nicht zu modifizieren.
+In SciChat ist es möglich einen Nutzer zu erstellen, den mal per C#-Programmcode automatisieren kann. Ein solcher automatisierter Nutzer wird ab jetzt als `Bot` bezeichnet. Um  einen Bot zu erstellen ist [Die BotAPI](https://github.com/Levithan7/SciChat/tree/main/SciChatApi) zu klonen. Dann lässt sich in der `Program.cs` eine Instanz der `Bot`-Klasse erstellen und darüber Handeln. Ein Beispiel dafür ist [hier]([https://github.com/Levithan7/SciChat/tree/main/SciChatApi](https://github.com/Levithan7/SciChat/blob/main/SciChatApi/Program.cs)) beflindlich. Die restlichen Dateien sind nicht zu modifizieren.
 
 ## Die Entwicklung
 Zur Entwicklung von SciChat haben wir folgende Software verwendet:
@@ -174,8 +229,7 @@ Server Request aktualisiert.
 
 **List<Conversation>? GetConversations()**
 
-Gibt eine Liste mit allen Conversations zurück. TODO: Ist er in keiner Conversation soll eine leere Liste
-statt null zurückgegeben werden.
+Gibt eine Liste mit allen Conversations zurück.
 
 **void SendMessage(string content, int convID)**
 
@@ -194,7 +248,6 @@ Diese Method ruft `static string FetchData(string request)`, und erstellt dazu a
 
 **static string FetchData(string request)**
 Diese Methode wird im allgemeinen verwendet, um Get-Requests an den Server zu schicken und gibt die entsprechenden Werte zurück.
-TODO null-Rückgabe bei Fehler!
 
 **void PostData(string url, Dictionary<string, string> parameters, bool addCredentials = true)**
 Diese Method ruft `static void PostData(string url, Dictionary<string, string> parameters)`, und erstellt dazu aus dem Parameter-Dictionary sowie der suburl (also dem Namen des Request; z.B. 'addmessage') einen entsprechenden Request.
@@ -218,34 +271,30 @@ der Nutzer, der versucht einen Request zu erstellen dazu berechtigt ist. Wenn ni
 **IActionResult GetConversation(int id, int u, string p)**
 
 Gibt die Konversation der ID `id` zurück. Allerdings nur, wenn der Nutzer, der die Abfrage ausführt auch Teil dieser Konversation ist.
-TODO: SICHERHEIT
 
 **IActionResult GetConversationsByUserID(int userid, int u, string p)**
 
 Gibt alle Konversationen zurück, in denen sich der User der id 'userid' befindet. Allerdings nur, wenn
 der User, der den Request ausführt auch der User ist, dessen Konversationen ausgegeben werden sollen.
-TODO: SICHERHEIT
 
 **IActionResult GetConversationMembers(int id, int u, string p)**
 
 Gibt alle Mitglieder einer Konversation der ID `id` zurück, wenn sich der Nutzer, der das Request erstellt in dieser Konversation befindet.
-TODO: SICHERHEIT
 
 **IActionResult GetConversationMessages(int id, int u, string p)**
 
 Gibt alle Nachrichten einer Konversation der ID `id` zurück, wenn sich der Nutzer, der das Request erstellt in dieser Konversation befindet.
-TODO: SICHERHEIT
 
 **IActionResult GetUserReceivedMessages(int userid, int u, string p, bool includeOwn=false)**
 
 Gibt alle Nachrrichten zurück, die der Nutzer der ID `userid` jemals erhalten hat. Ist `includeOwn` auf `true` gesetzt, werden dabei auch Nachrichten berücksichtigt, die der Nutzer selbst geschickt hat. Allerdings nur, wenn der Nutzer, der den Request erstellt hat auch der Nutzer ist, der den Request erstellt hat.
-TODO: Sicherheit
 
 **IActionResult GetUserSentMessages(int userid, int u, string p)**
+
 Gibt alle Nachrrichten zurück, die der Nutzer der ID `userid` jemals gesendet hat. Allerdings nur, wenn der Nutzer, der den Request erstellt hat auch der Nutzer ist, der den Request erstellt hat.
-TODO: Sicherheit
 
 **IActionResult AddMessage(int userid, int conversationid, string content, int u, string p)**
+
 Lässt den Nutzer der ID `userid` eine Nachricht des Inhalts `content` in die Konversation der ID `conversationid` schicken, wenn der Nutzer
 - dem Nutzer entsprecht, der den Request ersetllt hat UND
 - der Nutzer Teil der Konversation ist
